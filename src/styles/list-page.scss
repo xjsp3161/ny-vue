@@ -1,0 +1,37 @@
+/**
+ * 列表界面头部样式
+ * @author super
+ *
+ */
+.search-bar {
+  width: 100%;
+  min-height: 42px;
+  max-height: 190px;
+  .left {
+    float: left;
+    margin-left: 5px;
+  }
+  .right {
+    float: right;
+    margin-right: 5px;
+  }
+  .el-input {
+    float: left;
+    margin-top: 5px;
+  }
+  .el-button {
+    float: left;
+    margin-top: 5px;
+  }
+}
+.list-table-layout {
+  float: left;
+  width: 100%;
+  overflow: auto;
+  empty-cells: show;
+  table-layout:fixed;
+  word-wrap:break-word;
+  border-collapse: collapse;
+  margin:0 auto;
+  border: none;
+}
