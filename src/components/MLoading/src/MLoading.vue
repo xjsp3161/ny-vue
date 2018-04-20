@@ -19,7 +19,6 @@
 
 <script>
   export default {
-    name: 'MLoading',
     data() {
       return {
         text: null,
@@ -39,16 +38,20 @@
       setText(text) {
         this.text = text
       },
-      clickRefresh() {
+      reset() {
         this.text = '加载中..'
         this.textColor = '#409EFF'
         this.refresh = false
         this.spinner = true
+      },
+      clickRefresh() {
+        this.reset()
         this.$emit('refresh')
       }
     }
   }
 </script>
+
 <style scope="scope" type="text/css">
   a{
     position: relative;

@@ -21,3 +21,11 @@ export default {
   }
 }
 </script>
+
+<style rel="stylesheet/scss" lang="scss" scoped>
+// .app-main {
+//   background-color: white;
+//   margin-top: 5px;
+//   margin-left: 15px;
+// }
+</style>

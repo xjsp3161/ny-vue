@@ -64,6 +64,7 @@ export default {
 </script>
 
 <style rel="stylesheet/scss" lang="scss" scoped>
+@import "src/styles/navbar.scss";
 .navbar {
   height: 50px;
   line-height: 50px;

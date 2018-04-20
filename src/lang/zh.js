@@ -1,9 +1,6 @@
 export default {
   route: {
-    dashboard: '首页',
-    basicInfo: '基础信息',
-    brand: '品牌',
-    color: '颜色'
+    dashboard: '首页'
   },
   navbar: {
     logOut: '退出登录',

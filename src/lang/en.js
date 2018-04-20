@@ -1,9 +1,6 @@
 export default {
   route: {
-    dashboard: 'Dashboard',
-    basicInfo: 'BasicInfo',
-    brand: 'Brand',
-    color: 'Color'
+    dashboard: 'Dashboard'
   },
   navbar: {
     logOut: 'Log Out',

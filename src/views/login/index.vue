@@ -1,100 +1,82 @@
 <template>
   <div class="login-container">
-    <el-form class="login-form" autoComplete="on" :model="loginForm" :rules="loginRules" ref="loginForm" label-position="left">
-      <div class="title-container">
-        <h3 class="title">{{$t('login.title')}}</h3>\
-      </div>
-      <el-form-item prop="username">
-        <span class="svg-container svg-container_login">
-          <svg-icon icon-class="user" />
-        </span>
-        <el-input name="username" type="text" v-model="loginForm.username" autoComplete="on" placeholder="username" />
-      </el-form-item>
-
-      <el-form-item prop="password">
-        <span class="svg-container">
-          <svg-icon icon-class="password" />
-        </span>
-        <el-input name="password" :type="passwordType" @keyup.enter.native="handleLogin" v-model="loginForm.password" autoComplete="on" placeholder="password" />
-        <span class="show-pwd" @click="showPwd">
-          <svg-icon icon-class="eye" />
-        </span>
-      </el-form-item>
-
-      <el-button type="primary" style="width:100%;margin-bottom:30px;" :loading="loading" @click.native.prevent="handleLogin">{{$t('login.logIn')}}</el-button>
-
-      <div class="tips">
-        <span>{{$t('login.username')}} : admin</span>
-        <span>{{$t('login.password')}} : {{$t('login.any')}}</span>
-      </div>
-      <div class="tips">
-        <span style="margin-right:18px;">{{$t('login.username')}} : editor</span>
-        <span>{{$t('login.password')}} : {{$t('login.any')}}</span>
-      </div>
-
-      <el-button class="thirdparty-button" type="primary" @click="showDialog=true">{{$t('login.thirdparty')}}</el-button>
-    </el-form>
-
-    <el-dialog :title="$t('login.thirdparty')" :visible.sync="showDialog">
-      {{$t('login.thirdpartyTips')}}
-      <br/>
-      <br/>
-      <br/>
-      <social-sign />
-    </el-dialog>
-
+    <div class="title-container">
+      <h1> Cloudolp 数据服务有限公司 </h1>
+    </div>
+    <div class="form-container">
+      <el-form :model="ruleForm" status-icon :rules="rules" ref="ruleForm" label-width="0" class="demo-ruleForm">
+        <el-form-item label="" prop="username">
+          <el-input type="password" v-model.trim="ruleForm.username" placeholder="用户名" auto-complete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="" prop="password">
+          <el-input type="password" v-model="ruleForm.password" placeholder="密码"  auto-complete="off"></el-input>
+        </el-form-item>
+        <div class="text-container">
+          <el-checkbox v-model="autoLogin">自动登陆</el-checkbox>
+        </div>
+        <el-form-item>
+          <el-button type="primary" class="login-button" :loading="loading" @click="loginAction">{{loadingText}}</el-button>
+        </el-form-item>
+        <div class="text-container">
+          <el-button class="left" type="text">忘记密码</el-button>
+          <el-button class="right" type="text">注册账户</el-button>
+        </div>
+      </el-form>
+    </div>
+    <div class="footer-container">
+      <p>Copyright © 2018  Cloudolp Web Development</p>
+    </div>
+    <vue-particles
+      color="#dedede"
+      :particleOpacity="0.7"
+      :particlesNumber="80"
+      shapeType="circle"
+      :particleSize="4"
+      linesColor="#dedede"
+      :linesWidth="1"
+      :lineLinked="true"
+      :lineOpacity="0.4"
+      :linesDistance="150"
+      :moveSpeed="3"
+      :hoverEffect="true"
+      hoverMode="grab"
+      :clickEffect="true"
+      clickMode="push">
+    </vue-particles>
   </div>
 </template>
 
 <script>
-import { isvalidUsername } from '@/utils/validate'
-import SocialSign from './socialsignin'
+import VueParticles from '@/components/Particles/index'
 
 export default {
-  components: { SocialSign },
   name: 'login',
+  components: { VueParticles },
   data() {
-    const validateUsername = (rule, value, callback) => {
-      if (!isvalidUsername(value)) {
-        callback(new Error('Please enter the correct user name'))
-      } else {
-        callback()
-      }
-    }
-    const validatePassword = (rule, value, callback) => {
-      if (value.length < 6) {
-        callback(new Error('The password can not be less than 6 digits'))
-      } else {
-        callback()
-      }
-    }
     return {
-      loginForm: {
-        username: 'admin',
-        password: '1111111'
+      ruleForm: {
+        username: null,
+        password: null
       },
-      loginRules: {
-        username: [{ required: true, trigger: 'blur', validator: validateUsername }],
-        password: [{ required: true, trigger: 'blur', validator: validatePassword }]
+      rules: {
+        username: [
+          { required: true, message: '请输入用户名', trigger: 'blur' }
+        ],
+        password: [
+          { required: true, message: '请输入密码', trigger: 'blur' },
+          { min: 6, message: '密码不能少于 6 个字符', trigger: 'blur' }
+        ]
       },
-      passwordType: 'password',
       loading: false,
-      showDialog: false
+      autoLogin: false
     }
   },
   methods: {
-    showPwd() {
-      if (this.passwordType === 'password') {
-        this.passwordType = ''
-      } else {
-        this.passwordType = 'password'
-      }
-    },
-    handleLogin() {
-      this.$refs.loginForm.validate(valid => {
+    loginAction() {
+      this.$refs.ruleForm.validate(valid => {
         if (valid) {
           this.loading = true
-          this.$store.dispatch('LoginByUsername', this.loginForm).then(() => {
+          this.$store.dispatch('LoginByUsername', this.ruleForm).then(() => {
             this.loading = false
             this.$router.push({ path: '/' })
           }).catch(() => {
@@ -105,136 +87,79 @@ export default {
           return false
         }
       })
-    },
-    afterQRScan() {
-      // const hash = window.location.hash.slice(1)
-      // const hashObj = getQueryObject(hash)
-      // const originUrl = window.location.origin
-      // history.replaceState({}, '', originUrl)
-      // const codeMap = {
-      //   wechat: 'code',
-      //   tencent: 'code'
-      // }
-      // const codeName = hashObj[codeMap[this.auth_type]]
-      // if (!codeName) {
-      //   alert('第三方登录失败')
-      // } else {
-      //   this.$store.dispatch('LoginByThirdparty', codeName).then(() => {
-      //     this.$router.push({ path: '/' })
-      //   })
-      // }
     }
   },
-  created() {
-    // window.addEventListener('hashchange', this.afterQRScan)
-  },
-  destroyed() {
-    // window.removeEventListener('hashchange', this.afterQRScan)
+  computed: {
+    loadingText() {
+      return this.loading ? '登陆中..' : '登陆'
+    }
   }
 }
 </script>
 
 <style rel="stylesheet/scss" lang="scss">
-$bg:#2d3a4b;
-$light_gray:#eee;
-
-/* reset element-ui css */
 .login-container {
-  .el-input {
-    display: inline-block;
-    height: 47px;
-    width: 85%;
-    input {
-      background: transparent;
-      border: 0px;
-      -webkit-appearance: none;
-      border-radius: 0px;
-      padding: 12px 5px 12px 15px;
-      color: $light_gray;
-      height: 47px;
-      &:-webkit-autofill {
-        -webkit-box-shadow: 0 0 0px 1000px $bg inset !important;
-        -webkit-text-fill-color: #fff !important;
-      }
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  background-color: rgba(0, 0, 0, 0.9);
+  overflow: hidden;
+  .title-container {
+    z-index: 999;
+    position: fixed!important;
+    width: 100%;
+    height: 100px;
+    top: 3%;
+    text-align: center;
+    color: white;
+  }
+  .form-container {
+    background-color: rgba(255,255,255, 0.0);
+    z-index: 999;
+    position: fixed!important;
+    width: 300px;
+    height: 300px;
+    left: 50%;
+    top: 50%;
+    margin-top: -100px;
+    margin-left: -150px;
+    color: white;
+    .el-input__inner {
+      background-color: transparent;
+      color: white;
+    }
+    .el-checkbox {
+      color: white;
+    }
+    .text-container {
+      width: 100%;
+      height: 40px;
+    }
+    .login-button {
+      width: 100%;
     }
   }
-  .el-form-item {
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    background: rgba(0, 0, 0, 0.1);
-    border-radius: 5px;
-    color: #454545;
+  .footer-container {
+    width: 100%;
+    height: 80px;
+    line-height: 80px;
+    z-index: 999;
+    position: fixed!important;
+    text-align: center;
+    color: white;
+    bottom: 0;
   }
 }
-</style>
-
-<style rel="stylesheet/scss" lang="scss" scoped>
-@import "src/styles/mixin.scss";
-$bg:#2d3a4b;
-$dark_gray:#889aa4;
-$light_gray:#eee;
-
-.login-container {
-  @include relative;
-  height: 100vh;
-  background-color: $bg;
-  .login-form {
+#particles-js {
+    // background-image: url("http://img4.imgtn.bdimg.com/it/u=2393950688,574294532&fm=27&gp=0.jpg");
+    background-size: cover;
     position: absolute;
+    top: 0;
     left: 0;
-    right: 0;
-    width: 520px;
-    padding: 35px 35px 15px 35px;
-    margin: 120px auto;
-  }
-  .tips {
-    font-size: 14px;
-    color: #fff;
-    margin-bottom: 10px;
-    span {
-      &:first-of-type {
-        margin-right: 16px;
-      }
-    }
-  }
-  .svg-container {
-    padding: 6px 5px 6px 15px;
-    color: $dark_gray;
-    vertical-align: middle;
-    width: 30px;
-    display: inline-block;
-    &_login {
-      font-size: 20px;
-    }
-  }
-  .title-container {
-    position: relative;
-    .title {
-      font-size: 26px;
-      font-weight: 400;
-      color: $light_gray;
-      margin: 0px auto 40px auto;
-      text-align: center;
-      font-weight: bold;
-    }
-    .set-language {
-      color: #fff;
-      position: absolute;
-      top: 5px;
-      right: 0px;
-    }
-  }
-  .show-pwd {
-    position: absolute;
-    right: 10px;
-    top: 7px;
-    font-size: 16px;
-    color: $dark_gray;
-    cursor: pointer;
-    user-select: none;
-  }
-  .thirdparty-button {
-    position: absolute;
-    right: 35px;
-    bottom: 28px;
-  }
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
 }
 </style>
