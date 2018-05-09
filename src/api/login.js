@@ -2,13 +2,22 @@ import request from '@/utils/request'
 
 export function loginByUsername(username, password) {
   const data = {
-    username,
-    password
+    username: username,
+    password: password,
+    grant_type: 'password',
+    client: 'frontend'
   }
   return request({
-    url: '/login/login',
+    url: '/login/oauth/token',
     method: 'post',
-    data
+    params: data,
+    header: {
+      'Content-Type': 'application/x-www-form-urlencoded'
+    },
+    auth: {
+      username: 'frontend',
+      password: 'frontend'
+    }
   })
 }
 

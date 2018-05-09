@@ -6,7 +6,7 @@
     <div class="form-container">
       <el-form :model="ruleForm" status-icon :rules="rules" ref="ruleForm" label-width="0" class="demo-ruleForm">
         <el-form-item label="" prop="username">
-          <el-input type="password" v-model.trim="ruleForm.username" placeholder="用户名" auto-complete="off"></el-input>
+          <el-input v-model.trim="ruleForm.username" placeholder="用户名" auto-complete="off"></el-input>
         </el-form-item>
         <el-form-item label="" prop="password">
           <el-input type="password" v-model="ruleForm.password" placeholder="密码"  auto-complete="off"></el-input>

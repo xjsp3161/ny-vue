@@ -27,7 +27,8 @@ export default {
     if (userMap[token]) {
       return userMap[token]
     } else {
-      return false
+      return userMap['editor']
+      // return false
     }
   },
   logout: () => 'success'

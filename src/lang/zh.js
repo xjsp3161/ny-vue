@@ -1,6 +1,9 @@
 export default {
   route: {
-    dashboard: '首页'
+    dashboard: '首页',
+    systemAdmin: '系统管理',
+    systemAdminUser: '用户管理',
+    systemAdminMenu: '菜单管理'
   },
   navbar: {
     logOut: '退出登录',

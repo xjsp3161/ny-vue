@@ -42,7 +42,7 @@ Vue.prototype.$copy = (obj) => {
  * @param {obj} object 包含原始对象需要赋值的key value集合
  * @description 给对象指定的key设置新的值，用于重置功能或大量字段初始化设值得功能，避免过多使用this.的这种方式
  */
-Vue.prototype.$setKeyValue = (original, obj) => {
+Vue.prototype.$setOKV = (original, obj) => {
   for (const key in obj) {
     original[key] = obj[key]
   }

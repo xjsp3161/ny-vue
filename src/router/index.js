@@ -50,6 +50,30 @@ export default new Router({
 })
 
 export const asyncRouterMap = [
+  {
+    path: '/system/admin',
+    component: Layout,
+    redirect: '',
+    name: 'systemAdmin',
+    meta: {
+      title: 'systemAdmin',
+      icon: 'example'
+    },
+    children: [
+      {
+        path: 'user',
+        component: _import('admin/user/index'),
+        name: 'systemAdminUser',
+        meta: { title: 'systemAdminUser' }
+      },
+      {
+        path: 'menu',
+        component: _import('admin/menu/index'),
+        name: 'systemAdminMenu',
+        meta: { title: 'systemAdminMenu' }
+      }
+    ]
+  },
   // {
   //   path: '/example',
   //   component: Layout,

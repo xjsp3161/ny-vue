@@ -11,18 +11,18 @@ module.exports = {
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
     proxyTable: {
-        '/api/': {
-            target: 'http://localhost:8080',
-            changeOrigin: true,
-            pathRewrite: {
-                '^/api': '/api'
-            }
-        },
-      '/foundation/': {
-        target: 'http://foundation.dev.cloudolp.com', //这个路径是我代理到本地tp框架里面
-        changeOrigin: true,    //开启代理
+      '/login/': {
+          target: 'http://localhost:1000',
+          changeOrigin: true,
+          pathRewrite: {
+            '^/login': '/login'
+          }
+      },
+      '/admin/': {
+        target: 'http://localhost:1000',
+        changeOrigin: true,
         pathRewrite: {
-          '^/foundation': '/foundation'//这里重写路径/run就代理到对应地址
+          '^/admin': '/admin'
         },
       },
     },
