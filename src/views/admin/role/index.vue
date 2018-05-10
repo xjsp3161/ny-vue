@@ -1,6 +1,6 @@
 <!-- 基础信息 - 品牌 -->
 <template>
-<div id="user">
+<div id="role">
   <search-bar :data="searchBarData" @search="searchAction" @add="showAdd()" @command="clickMoreCommand"></search-bar>
   <table-contain :height.sync="table.maxHeight">
     <el-table :data="table.data" slot="table" :size="table.size" :max-height="table.maxHeight" style="width: 100%;">
@@ -9,27 +9,9 @@
           <span>{{scope.$index + 1}}</span>
         </template>
       </el-table-column>
-      <el-table-column prop="username" label="用户名" align="center"></el-table-column>
-      <el-table-column prop="nickname" label="昵称" align="center"></el-table-column>
-      <!-- <el-table-column prop="status" label="密码" align="center">
-        <template slot-scope="scope">
-          <span v-if="scope.row.autoGenerateType === 0">不自动生成条码</span>
-          <span v-else-if="scope.row.autoGenerateType === 1">商品编码+颜色编码+尺码</span>
-          <span v-else-if="scope.row.autoGenerateType === 2">商品编码+尺码</span>
-        </template>
-      </el-table-column> -->
-      <el-table-column prop="enable" label="状态" align="center">
-        <template slot-scope="scope">
-          <template v-if="scope.row.status == 0">
-            <el-tag size="mini" type="info">禁用</el-tag>
-          </template>
-          <template v-else>
-            <el-tag size="mini">启用</el-tag>
-          </template>
-        </template>
-      </el-table-column>
-      <!-- <el-table-column prop="updateUser" label="最后更新人" align="center"></el-table-column> -->
-      <el-table-column prop="lastPasswordChange" label="最后更新时间" align="center"></el-table-column>
+      <el-table-column prop="name" label="角色名称" align="center"></el-table-column>
+      <el-table-column prop="code" label="角色编码" align="center"></el-table-column>
+      <el-table-column prop="description" label="描述" align="center"></el-table-column>
       <el-table-column label="操作" align="center" width="180">
         <template slot-scope="scope">
          <el-button type="primary" size="mini" @click="clickEdit(scope.$index, scope.row)">编辑</el-button>
@@ -52,7 +34,7 @@
 </div>
 </template>
 <script>
-import { fetchList, crud } from '@/api/user.js'
+import { fetchList, crud } from '@/api'
 import model from '@/public/indexModel.js'
 import Add from './add.vue'
 export default {
@@ -63,23 +45,18 @@ export default {
     return {
       searchBarData: [
         [
-          { type: 'option', value: null, key: 'status', placeholder: '状态', options: [
-            { label: '启用', value: 1 },
-            { label: '禁用', value: 0 }]
-          },
           { type: 'input', value: null, key: 'nameOrCode', placeholder: '编码或名称模糊检索', class: 'w130' },
           { type: 'search', name: '查询' },
           { type: 'reset', name: '重置' }
         ],
         [
           { type: 'add', name: '新增' }
-          // { type: 'more', labels: ['导入', '上传图片'] }
         ]
       ]
     }
   },
   mounted() {
-    this.createDefaultMLoading('#user')
+    this.createDefaultMLoading('#role')
     this.fetchData()
   },
   methods: {
@@ -88,7 +65,7 @@ export default {
       const { page, size } = this.pagination
       params.page = page
       params.size = size
-      fetchList(params).then(({ data }) => {
+      fetchList('admin/api/sysRole', params).then(({ data }) => {
         this.mloading.hide()
         this.table.data = data.data
         this.pagination.total = data.total

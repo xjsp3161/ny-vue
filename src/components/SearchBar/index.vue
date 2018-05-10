@@ -26,6 +26,7 @@
       </div>
       <template v-esle-if="data.length > 1">
         <div class="right" v-show="rightVisible">
+          <slot ref="rightFirst" name="rightFirst"></slot>
           <div class="left" v-for="(item, index) in data[1]" :key="index">
             <template v-if="item.type === 'add'">
               <el-button size="small" @click="clickAdd">{{item.name}}</el-button>
@@ -42,7 +43,6 @@
         </div>
       </template>
     </template>
-    <slot></slot>
   </div>
 </template>
 
