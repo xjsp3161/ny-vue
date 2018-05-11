@@ -3,15 +3,18 @@
  * @author super
  *
  */
- .search-bar {
+.search-bar {
   width: 100%;
-  margin-top: 5px;
+  margin: 10px 0;
+  // padding: 8px 5px;
   min-height: 42px;
   max-height: 190px;
   background-color: white;
+  @include clearfix;
   .left {
     float: left;
     margin-left: 5px;
+    height: 40px;
     .el-range-editor--small.el-input__inner {
       margin-top: 5px;
       padding-left: 5px;
@@ -46,4 +49,5 @@ div.el-pagination {
   background-color: white;
   width: 100%;
   text-align: center;
+  padding: 20px 0;
 }

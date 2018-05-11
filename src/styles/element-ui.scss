@@ -119,10 +119,6 @@ input::-webkit-input-placeholder{
   text-align: center;
 }
 
-.el-table__body tr.hover-row>td{
-  background-color: #e6f7ff;
-}
-
 .el-table td, .el-table th.is-leaf {
   border-bottom: 1px solid #e8e8e8;
 }
@@ -133,9 +129,9 @@ input::-webkit-input-placeholder{
 .el-table .cell, .el-table th div {
   padding-right: 0
 }
-// .el-table--mini td, .el-table--mini th {
-//   padding: 6px 0;
-// }
+.el-table--mini td, .el-table--mini th {
+  padding: 6px 0;
+}
 .cell .el-button--mini,.cell .el-button--mini.is-round {
   padding: 5px 7px;
   margin-left: 2px;
@@ -157,4 +153,20 @@ input::-webkit-input-placeholder{
 .el-range-editor.is-active, .el-range-editor.is-active:hover {
   border-color: #409EFF;
   box-shadow:0px 0px 5px 1px rgba(69,169,255,0.5);
+}
+
+.el-dialog__header {
+  text-align: center;
+  vertical-align: middle;
+}
+
+.el-tree--highlight-current .el-tree-node.is-current>.el-tree-node__content{
+  background-color: #e6f7ff!important;
+}
+
+.el-radio__inner {
+  border: 1px solid #b9b9b9;
+}
+.el-radio+.el-radio {
+  margin-left: 15px;
 }

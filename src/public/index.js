@@ -51,6 +51,18 @@ Vue.prototype.$setKeyValue = (original, obj) => {
 /**
  * @author super
  * @param {original} object 原始对象
+ * @param {obj} object 新对象
+ * @description 给原始对象指定的key设置成新对象的值，避免大量赋值工作
+ */
+Vue.prototype.$setOriginalKV = (original, newObj) => {
+  for (const key in original) {
+    original[key] = newObj[key]
+  }
+}
+
+/**
+ * @author super
+ * @param {original} object 原始对象
  * @param {obj} object 包含原始对象需要判断的key value集合
  * @description 判断原始是否包含 新对象的 key 包括 key 的值是否和原始对象一致
  */
@@ -62,3 +74,4 @@ Vue.prototype.$compareObjValue = (original, obj) => {
   }
   return true
 }
+

@@ -7,3 +7,13 @@ export function fetchMenuTree(query) {
     params: query
   })
 }
+
+export function curdMenu(method, params) {
+  const methods = ['get', 'delete']
+  const key = methods.includes(method) ? 'params' : 'data'
+  return request({
+    url: '/admin/api/sysMenu',
+    method: method,
+    [key]: params
+  })
+}

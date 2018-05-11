@@ -1,5 +1,5 @@
 import { asyncRouterMap, constantRouterMap } from '@/router'
-
+const _import = require('./_import_' + process.env.NODE_ENV)
 /**
  * 通过meta.role判断是否与当前用户权限匹配
  * @param roles
@@ -52,6 +52,16 @@ const permission = {
         } else {
           accessedRouters = filterAsyncRouter(asyncRouterMap, roles)
         }
+        roles.forEach(item => {
+          item.meta = { title: item.name, icon: item.icon }
+          item.component = accessedRouters[0].component
+          for (let i = 0; i < item.children.length; i++) {
+            const child = item.children[i]
+            child.meta = { title: child.name }
+            child.component = _import(child.component)
+          }
+        })
+        accessedRouters = roles
         commit('SET_ROUTERS', accessedRouters)
         resolve()
       })

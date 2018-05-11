@@ -43,7 +43,7 @@
 import { fetchList, crud } from '@/api'
 import model from '@/public/indexModel.js'
 import Add from './add.vue'
-import MenuTree from './component/menuTree'
+import MenuTree from './component/MenuTree.vue'
 export default {
   mixins: [model],
   name: 'user',
