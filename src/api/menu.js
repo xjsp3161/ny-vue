@@ -11,9 +11,16 @@ export function fetchMenuTree(query) {
 export function curdMenu(method, params) {
   const methods = ['get', 'delete']
   const key = methods.includes(method) ? 'params' : 'data'
-  return request({
-    url: '/admin/api/sysMenu',
-    method: method,
-    [key]: params
-  })
+  if (methods.indexOf(method) >= 0) {
+    return request({
+      url: '/admin/api/sysMenu/' + params.id,
+      method: method
+    })
+  } else {
+    return request({
+      url: '/admin/api/sysMenu',
+      method: method,
+      [key]: params
+    })
+  }
 }

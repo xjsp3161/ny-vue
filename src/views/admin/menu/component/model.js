@@ -31,7 +31,8 @@ export default {
       },
       form: null,
       rules: {
-      }
+      },
+      isCluckOperationBtn: false
     }
   }
 }

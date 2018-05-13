@@ -13,10 +13,16 @@
           <span>{{scope.$index + 1}}</span>
         </template>
       </el-table-column>
-      <el-table-column prop="title" label="用户名称" align="center"></el-table-column>
-      <el-table-column prop="code" label="用户组编码" align="center"></el-table-column>
-      <el-table-column prop="parentName" label="父级名称" align="center"></el-table-column>
-      <el-table-column prop="description" label="描述" align="center"></el-table-column>
+      <el-table-column prop="title" label="名称" align="center"></el-table-column>
+      <el-table-column prop="icon" label="图标" align="center"></el-table-column>
+      <el-table-column prop="url" label="URL" align="center"></el-table-column>
+      <el-table-column prop="parentName" label="父级" align="center"></el-table-column>
+      <el-table-column prop="sort" label="排序" align="center"></el-table-column>
+      <el-table-column prop="level" label="等级" align="center"></el-table-column>
+      <el-table-column prop="name" label="国际化" align="center"></el-table-column>
+      <el-table-column prop="path" label="资源路径" align="center"></el-table-column>
+      <el-table-column prop="component" label="前端组件" align="center"></el-table-column>
+      <el-table-column prop="enable" label="状态" align="center"></el-table-column>
       <el-table-column label="操作" align="center" width="180">
         <template slot-scope="scope">
          <el-button type="primary" size="mini" @click="clickEdit(scope.$index, scope.row)">编辑</el-button>

@@ -1,3 +1,4 @@
+import { curdMenu } from '@/api/menu.js'
 export default {
   watch: {
     filterText(val) {
@@ -6,25 +7,41 @@ export default {
   },
   methods: {
     treeNodeClick(data, node, tree) {
-      // this.$setOriginalKV(this.form, data)
+      if (!this.isCluckOperationBtn) {
+        this.$setOriginalKV(this.form, data)
+      }
     },
     filterNode(value, data) {
       if (!value) return true
       return data.label.indexOf(value) !== -1
     },
     append(data) {
+      this.isCluckOperationBtn = true
       this.currentOperationTypes = this.OperationTypes.Add
       this.form = this.$copy(this.originalForm)
       this.$setKeyValue(this.form, { parentId: data.id, parentName: data.title, level: data.level + 1, enable: '1' })
-      // data.children.push(newChild)
+      setTimeout(() => {
+        this.isCluckOperationBtn = false
+      }, 200)
     },
     edit(data) {
     },
     remove(node, data) {
-      const parent = node.parent
-      const children = parent.data.children || parent.data
-      const index = children.findIndex(d => d.id === data.id)
-      children.splice(index, 1)
+      this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        curdMenu('delete', { id: data.id }).then(() => {
+          const parent = node.parent
+          const children = parent.data.children || parent.data
+          const index = children.findIndex(d => d.id === data.id)
+          children.splice(index, 1)
+          this.$message({ type: 'success', message: '删除成功!' })
+        }).catch(() => {
+          this.$message({ type: 'error', message: '删除失败!' })
+        })
+      }).catch(() => {})
     },
     renderContent(h, { node, data, store }) {
       if (data.children && data.children.length > 0) {

@@ -35,7 +35,7 @@ service.interceptors.response.use(
       return response
     } else {
       const data = response.data
-      if (data.code === 0) {
+      if (data.code === 0 || data.access_token) {
         return data // 正常处理直接返回需要接受的数据
       } else {
         // 这里假设code返回不为 0 表示， 就直接返回错误的处理

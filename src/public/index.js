@@ -1,6 +1,5 @@
 
 import Vue from 'vue'
-
 /**
  * @author super
  * @param {*} object 字符串 对象 数组
@@ -74,4 +73,3 @@ Vue.prototype.$compareObjValue = (original, obj) => {
   }
   return true
 }
-
