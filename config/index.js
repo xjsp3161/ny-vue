@@ -23,8 +23,15 @@ module.exports = {
         changeOrigin: true,
         pathRewrite: {
           '^/admin': '/admin'
-        },
-      },
+        }
+      }
+      '/api/': {
+        target: 'http://localhost:8762',
+        changeOrigin: true,
+        pathRewrite: {
+          '^/api': '/api'
+        }
+      }
     },
 
     // Various Dev Server settings
