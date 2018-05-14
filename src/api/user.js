@@ -1,6 +1,6 @@
 import request from '@/utils/request'
 
-const url = 'admin/api/sysUser'
+const url = '/admin/api/sysUser'
 
 export function fetchList(query) {
   return request({
@@ -23,6 +23,22 @@ export function crud(method, params) {
 export function checkNameOrCodeExist(query) {
   return request({
     url: 'foundation/v1.0/api/goodsBranch/exists',
+    method: 'GET',
+    params: query
+  })
+}
+
+export function fetchRoleNoExistUsers(query) {
+  return request({
+    url: '/admin/api/sysUser/roleNoExistUsers',
+    method: 'GET',
+    params: query
+  })
+}
+
+export function fetchRoleUsers(query) {
+  return request({
+    url: '/admin/api/sysUser/roleUsers',
     method: 'GET',
     params: query
   })

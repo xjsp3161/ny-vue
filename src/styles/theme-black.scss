@@ -72,12 +72,12 @@
 
 /** 定制 element ui table 样式颜色 start **/
 .el-table th>.cell {
-  color: rgba(0,0,0,1);
-  font-weight: 50;
+  color: rgba(0,0,0,.95);
+  font-weight: 500;
   font-size: 14px;
 }
 .el-table td>.cell {
-  color: rgba(0,0,0,.80);
+  color: rgba(0,0,0,.65);
   font-size: 13px;
 }
 /** 定制 element ui table样式颜色 start **/

@@ -81,9 +81,9 @@ export const asyncRouterMap = [
       },
       {
         path: 'group',
-        component: _import('admin/group/index'),
-        name: 'systemAdminGroup',
-        meta: { title: 'systemAdminGroup' }
+        component: _import('admin/userGroup/index'),
+        name: 'systemAdminUserGroup',
+        meta: { title: 'systemAdminUserGroup' }
       }
     ]
   },

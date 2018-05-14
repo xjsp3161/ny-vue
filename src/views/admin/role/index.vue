@@ -14,6 +14,7 @@
       <el-table-column prop="description" label="描述" align="center"></el-table-column>
       <el-table-column label="操作" align="center" width="180">
         <template slot-scope="scope">
+          <el-button type="primary" size="mini" @click="clickShowUserAssociation(scope.$index, scope.row)">关联用户</el-button>
          <el-button type="primary" size="mini" @click="clickEdit(scope.$index, scope.row)">编辑</el-button>
           <el-button type="danger" size="mini" @click="clickDelete(scope.$index, scope.row)">删除</el-button>
         </template>
@@ -31,16 +32,18 @@
     </el-pagination>
   </table-contain> 
   <add v-if="add.visiable" v-model="add.visiable" :data="add.data" @add="handleCurrentChange(1)" @edit="fetchData"></add>
+  <user-association v-if="userAssociation.visiable" v-model="userAssociation.visiable" :data="userAssociation.data"></user-association>
 </div>
 </template>
 <script>
 import { fetchList, crud } from '@/api'
 import model from '@/public/indexModel.js'
 import Add from './add.vue'
+import UserAssociation from '../component/UserAssociation'
 export default {
   mixins: [model],
   name: 'user',
-  components: { Add },
+  components: { Add, UserAssociation },
   data() {
     return {
       searchBarData: [
@@ -52,7 +55,14 @@ export default {
         [
           { type: 'add', name: '新增' }
         ]
-      ]
+      ],
+      userAssociation: {
+        visiable: false,
+        data: {
+          type: 'role',
+          title: '角色关联用户'
+        }
+      }
     }
   },
   mounted() {
@@ -108,6 +118,9 @@ export default {
           this.$message({ type: 'error', message: '删除失败!' })
         })
       })
+    },
+    clickShowUserAssociation(index, row) {
+      this.$setKeyValue(this.userAssociation, { visiable: true, data: { obj: row }})
     }
   }
 }

@@ -5,7 +5,7 @@ export default {
     systemAdminUser: '用户管理',
     systemAdminMenu: '菜单管理',
     systemAdminRole: '角色管理',
-    systemAdminGroup: '用户组管理'
+    systemAdminUserGroup: '用户组管理'
   },
   navbar: {
     logOut: '退出登录',
