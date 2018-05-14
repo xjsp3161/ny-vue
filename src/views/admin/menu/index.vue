@@ -81,7 +81,7 @@ export default {
       const { page, size } = this.pagination
       params.page = page
       params.size = size
-      fetchList('admin/api/sysMenu', params).then(({ data }) => {
+      fetchList('/admin/api/sysMenu', params).then(({ data }) => {
         this.mloading.hide()
         this.table.data = data.data
         this.pagination.total = data.total

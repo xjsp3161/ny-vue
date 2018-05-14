@@ -24,7 +24,7 @@ module.exports = {
         pathRewrite: {
           '^/admin': '/admin'
         }
-      }
+      },
       '/api/': {
         target: 'http://localhost:8762',
         changeOrigin: true,
