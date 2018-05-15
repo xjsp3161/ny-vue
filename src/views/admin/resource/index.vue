@@ -1,11 +1,7 @@
 <!-- 基础信息 - 品牌 -->
 <template>
-<div id="menu">
-  <search-bar :data="searchBarData" @search="searchAction" @add="showAdd()" @command="clickMoreCommand">
-      <div class="left" slot="rightFirst">
-        <el-button size="small" @click="menuTree.visiable=true">显示菜单树</el-button>
-      </div>
-  </search-bar>
+<div id="resource">
+  <search-bar :data="searchBarData" @search="searchAction" @add="showAdd()" @command="clickMoreCommand"></search-bar>
   <table-contain :height.sync="table.maxHeight">
     <el-table :data="table.data" slot="table" :size="table.size" :max-height="table.maxHeight" style="width: 100%;">
       <el-table-column label="序号" width="50" align="center">
@@ -13,17 +9,22 @@
           <span>{{scope.$index + 1}}</span>
         </template>
       </el-table-column>
-      <el-table-column prop="title" label="名称" align="center"></el-table-column>
-      <el-table-column prop="icon" label="图标" align="center"></el-table-column>
+      <el-table-column prop="name" label="名称" align="center"></el-table-column>
+      <el-table-column prop="code" label="编码" align="center"></el-table-column>
       <el-table-column prop="url" label="URL" align="center"></el-table-column>
-      <el-table-column prop="parentName" label="父级" align="center"></el-table-column>
-      <el-table-column prop="sort" label="排序" align="center"></el-table-column>
-      <el-table-column prop="level" label="等级" align="center"></el-table-column>
-      <el-table-column prop="name" label="国际化" align="center"></el-table-column>
-      <el-table-column prop="path" label="资源路径" align="center"></el-table-column>
-      <el-table-column prop="component" label="前端组件" align="center"></el-table-column>
-      <el-table-column prop="enable" label="状态" align="center"></el-table-column>
-      <el-table-column label="操作" align="center" width="100">
+      <el-table-column prop="urlRequestType" label="URL请求类型" align="center"></el-table-column>
+      <el-table-column prop="description" label="描述" align="center"></el-table-column>
+      <el-table-column prop="status" label="状态" align="center">
+        <template slot-scope="scope">
+          <template v-if="scope.row.status == 0">
+            <el-tag size="mini" type="info">禁用</el-tag>
+          </template>
+          <template v-else>
+            <el-tag size="mini">启用</el-tag>
+          </template>
+        </template>
+      </el-table-column>
+      <el-table-column label="操作" align="center" width="180">
         <template slot-scope="scope">
          <el-button type="primary" size="mini" @click="clickEdit(scope.$index, scope.row)">编辑</el-button>
           <el-button type="danger" size="mini" @click="clickDelete(scope.$index, scope.row)">删除</el-button>
@@ -42,18 +43,16 @@
     </el-pagination>
   </table-contain> 
   <add v-if="add.visiable" v-model="add.visiable" :data="add.data" @add="handleCurrentChange(1)" @edit="fetchData"></add>
-  <menu-tree v-if="menuTree.visiable" v-model="menuTree.visiable"></menu-tree>
 </div>
 </template>
 <script>
 import { fetchList, crud } from '@/api'
 import model from '@/public/indexModel.js'
 import Add from './add.vue'
-import MenuTree from './component/MenuTree.vue'
 export default {
   mixins: [model],
-  name: 'user',
-  components: { Add, MenuTree },
+  name: 'resource',
+  components: { Add },
   data() {
     return {
       searchBarData: [
@@ -65,14 +64,11 @@ export default {
         [
           { type: 'add', name: '新增' }
         ]
-      ],
-      menuTree: {
-        visiable: false
-      }
+      ]
     }
   },
   mounted() {
-    this.createDefaultMLoading('#menu')
+    this.createDefaultMLoading('#resource')
     this.fetchData()
   },
   methods: {
@@ -81,7 +77,7 @@ export default {
       const { page, size } = this.pagination
       params.page = page
       params.size = size
-      fetchList('/admin/api/sysMenu', params).then(({ data }) => {
+      fetchList('/admin/api/sysResource', params).then(({ data }) => {
         this.mloading.hide()
         this.table.data = data.data
         this.pagination.total = data.total

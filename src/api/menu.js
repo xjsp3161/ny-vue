@@ -24,3 +24,19 @@ export function curdMenu(method, params) {
     })
   }
 }
+
+export function fetchPermissionNoExistMenus(query) {
+  return request({
+    url: '/admin/api/sysMenu/permissionNoExistMenus',
+    method: 'GET',
+    params: query
+  })
+}
+
+export function fetchPermissionMenus(query) {
+  return request({
+    url: '/admin/api/sysMenu/permissionMenus',
+    method: 'GET',
+    params: query
+  })
+}
