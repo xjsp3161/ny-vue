@@ -125,11 +125,10 @@ export default {
             return
           }
           this.$setKeyValue(this.button, { loading: true, text: '提交中..' })
-          const url = '/admin/api/sysResource'
           if (this.data.type === 'add') {
-            crud(url, 'post', this.form).then(() => this.success()).catch(() => this.error())
+            crud('post', this.form).then(() => this.success()).catch(() => this.error())
           } else {
-            crud(url, 'put', this.form).then(() => this.success()).catch(() => this.error())
+            crud('put', this.form).then(() => this.success()).catch(() => this.error())
           }
         }
       })

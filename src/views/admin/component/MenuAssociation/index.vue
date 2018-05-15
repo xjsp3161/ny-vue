@@ -8,6 +8,7 @@
           <el-tree :expand-on-click-node="false" 
             :data="leftData.treeList" 
             highlight-current 
+            show-checkbox
             :props="defaultProps" 
             ref="leftTree">
           </el-tree>
@@ -71,8 +72,7 @@ export default {
       params.name = null
       fetchPermissionNoExistMenus(params).then(({ data }) => {
         this.mloading.hide()
-        this.leftData.treeList = data.data
-        this.pagination.total = data.total
+        this.leftData.treeList = data
       }).catch(error => {
         console.log(error)
       })
