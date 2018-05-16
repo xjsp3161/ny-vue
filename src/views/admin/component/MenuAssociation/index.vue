@@ -4,12 +4,16 @@
       <div class="content-layout">
         <div class="left-layout">
           <el-input size="small" v-model="leftData.filterName" placeholder="请输入内容"></el-input>
-          <p><el-button size="mini" @click="clickRelation" :disabled="leftData.button.disabled" v-loading="leftData.button.loading" plain>{{leftData.button.text}}</el-button></p>
+          <p>
+            <el-button size="mini" @click="clickRelation" :disabled="leftData.button.disabled" v-loading="leftData.button.loading" plain>{{leftData.button.text}}</el-button>
+            未关联菜单
+          </p>
           <el-tree :expand-on-click-node="false" 
             :data="leftData.treeList" 
             highlight-current 
             show-checkbox
             :props="defaultProps" 
+            @check-change="handlerLeftTreeCheckChange"
             ref="leftTree">
           </el-tree>
         </div>
@@ -17,7 +21,18 @@
         </div>
         <div class="right-layout">
           <el-input size="small" v-model="rightData.filename" placeholder="请输入内容"></el-input>
-          <p><el-button size="mini" @click="clickCancelRelation" v-loading="rightData.button.loading" plain>{{rightData.button.text}}</el-button></p>
+          <p>
+            <el-button size="mini" @click="clickCancelRelation" v-loading="rightData.button.loading" plain>{{rightData.button.text}}</el-button>
+            已关联菜单
+          </p>
+          <el-tree :expand-on-click-node="false" 
+            :data="rightData.treeList" 
+            highlight-current 
+            show-checkbox
+            :props="defaultProps" 
+            @check-change="handlerRightTreeCheckChange"
+            ref="leftTree">
+          </el-tree>
         </div>
       </div>
     </el-dialog>
@@ -40,6 +55,7 @@ export default {
       leftData: {
         filterName: null,
         treeList: null,
+        selectList: [],
         button: {
           text: '关联',
           loading: false
@@ -48,6 +64,7 @@ export default {
       rightData: {
         filterName: null,
         treeList: null,
+        selectList: [],
         button: {
           text: '取消关联',
           loading: false
@@ -104,16 +121,16 @@ export default {
       this.rightData.multipleSelection = val
     },
     clickRelation() {
-      if (!this.$empty(this.leftData.multipleSelection)) {
+      if (!this.$empty(this.leftData.selectList)) {
         this.$setKeyValue(this.leftData.button, { text: '关联中..', loading: true })
         const params = []
-        this.leftData.multipleSelection.forEach(element => {
-          params.push({ userId: element.id, permissionId: this.permissionId })
+        this.leftData.selectList.forEach(element => {
+          params.push({ menuId: element, permissionId: this.permissionId })
         })
-        crudPermissionMenus('post', '/admin/api/sysRole/batchRoleUsers', params).then(({ data }) => {
+        crudPermissionMenus('post', '/admin/api/sysPermission/batchPermissionMenus', params).then(({ data }) => {
           this.$setKeyValue(this.leftData.button, { text: '关联', loading: false })
-          this.loadRoleNoExistUsers()
-          this.loadRoleUsers()
+          this.loadPermissionNoExistMenus()
+          this.loadPermissionMenus()
         }).catch(() => {
           this.$setKeyValue(this.leftData.button, { text: '关联', loading: false })
           this.$message({ type: 'error', message: '关联失败' })
@@ -121,20 +138,40 @@ export default {
       }
     },
     clickCancelRelation() {
-      if (!this.$empty(this.rightData.multipleSelection)) {
+      if (!this.$empty(this.rightData.selectList)) {
         this.$setKeyValue(this.rightData.button, { text: '取消关联中..', loading: true })
-        const params = { permissionId: this.permissionId, menudIds: [] }
-        this.rightData.multipleSelection.forEach(element => {
-          params.menuIds.push(element.id)
+        const params = { permissionId: this.permissionId, menuIds: [] }
+        this.rightData.selectList.forEach(element => {
+          params.menuIds.push(element)
         })
-        crudPermissionMenus('post', '/admin/api/sysRole/cancelRoleUsers', params).then(({ data }) => {
+        crudPermissionMenus('post', '/admin/api/sysPermission/cancelPermissionMenus', params).then(({ data }) => {
           this.$setKeyValue(this.rightData.button, { text: '取消关联', loading: false })
-          this.loadRoleNoExistUsers()
-          this.loadRoleUsers()
+          this.loadPermissionNoExistMenus()
+          this.loadPermissionMenus()
         }).catch(() => {
-          this.$setKeyValue(this.rightData.button, { text: '关联', loading: false })
+          this.$setKeyValue(this.rightData.button, { text: '取消关联', loading: false })
           this.$message({ type: 'error', message: '取消关联失败' })
         })
+      }
+    },
+    handlerLeftTreeCheckChange(data, checked, indeterminate) {
+      if (checked) {
+        this.leftData.selectList.push(data.id)
+      } else {
+        const selectList = this.leftData.selectList
+        if (selectList.length > 0 && selectList.indexOf(data.id) !== -1) {
+          selectList.splice(selectList.indexOf(data.id), 1)
+        }
+      }
+    },
+    handlerRightTreeCheckChange(data, checked, indeterminate) {
+      if (checked) {
+        this.rightData.selectList.push(data.id)
+      } else {
+        const selectList = this.rightData.selectList
+        if (selectList.length > 0 && selectList.indexOf(data.id) !== -1) {
+          selectList.splice(selectList.indexOf(data.id), 1)
+        }
       }
     }
   }

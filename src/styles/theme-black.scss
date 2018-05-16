@@ -53,6 +53,12 @@
 .el-menu-item.submenu-title-noDropdown > span {
   padding-left: 0px;
 }
+.el-submenu.is-active .nest-menu .el-submenu > .el-submenu__title {
+  padding-left: 53px !important;
+}
+.el-menu--popup-right-start .el-submenu .el-submenu__title {
+  padding-left: 32px !important;
+}
 
 /** 定制 SiderBar black样式 end ***/
 

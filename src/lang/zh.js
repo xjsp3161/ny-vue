@@ -7,7 +7,10 @@ export default {
     systemAdminRole: '角色管理',
     systemAdminUserGroup: '用户组管理',
     systemAdminResource: '资源管理',
-    systemAdminPermission: '权限管理'
+    systemAdminPermission: '权限管理',
+    test: '测试',
+    test1: '测试1',
+    test2: '测试2'
   },
   navbar: {
     logOut: '退出登录',

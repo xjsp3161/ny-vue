@@ -39,8 +39,16 @@ import { constantRouterMap, LayoutComponent, _import_ } from '@/router'
 function filterRouter(roles) {
   roles.forEach(route => {
     route.meta = { title: route.name, icon: route.icon }
-    if (route.children && route.children.length) {
-      route.component = LayoutComponent
+    if (route.children !== null && route.children.length > 0) {
+      if (route.component === null) {
+        route.componentName = 'LayoutComponent'
+        route.component = LayoutComponent
+        route.redirect = '/sys/admin/test/test1'
+      } else {
+        route.componentName = route.component
+        route.component = _import_(route.component)
+        route.redirect = '/sys/admin/test/test1'
+      }
       filterRouter(route.children)
     } else {
       route.component = _import_(route.component)
@@ -72,7 +80,9 @@ const permission = {
         // } else {
         //   accessedRouters = filterAsyncRouter(asyncRouterMap, roles)
         // }
-        commit('SET_ROUTERS', filterRouter(roles))
+        const consoleRoles = filterRouter(roles)
+        console.log(consoleRoles)
+        commit('SET_ROUTERS', consoleRoles)
         resolve()
       })
     }
