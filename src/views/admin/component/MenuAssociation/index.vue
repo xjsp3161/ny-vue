@@ -86,39 +86,27 @@ export default {
     loadPermissionNoExistMenus(params = {}) {
       this.mloading.show()
       params.permissionId = this.permissionId
-      params.name = null
       fetchPermissionNoExistMenus(params).then(({ data }) => {
         this.mloading.hide()
-        this.leftData.treeList = data
+        if (data != null) {
+          this.leftData.treeList = data
+        }
       }).catch(error => {
         console.log(error)
       })
     },
     loadPermissionMenus(params = {}) {
       params.permissionId = this.permissionId
-      params.name = null
       fetchPermissionMenus(params).then(({ data }) => {
-        this.rightData.treeList = data
+        if (data != null) {
+          this.rightData.treeList = data
+        }
       }).catch(error => {
         console.log(error)
       })
     },
     closeDialog() {
       this.$emit('input', false)
-    },
-    handleSizeChange(val) {
-      this.pagination.size = val
-      this.loadRoleNoExistUsers()
-    },
-    handleCurrentChange(val) {
-      this.pagination.page = val
-      this.loadRoleNoExistUsers()
-    },
-    handleLeftSelectionChange(val) {
-      this.leftData.multipleSelection = val
-    },
-    handleRightSelectionChange(val) {
-      this.rightData.multipleSelection = val
     },
     clickRelation() {
       if (!this.$empty(this.leftData.selectList)) {
@@ -144,7 +132,7 @@ export default {
         this.rightData.selectList.forEach(element => {
           params.menuIds.push(element)
         })
-        crudPermissionMenus('post', '/admin/api/sysPermission/cancelPermissionMenus', params).then(({ data }) => {
+        crudPermissionMenus('post', '/admin/api/sysPermission/cancelPermissionMenus', params).then(() => {
           this.$setKeyValue(this.rightData.button, { text: '取消关联', loading: false })
           this.loadPermissionNoExistMenus()
           this.loadPermissionMenus()
@@ -160,7 +148,7 @@ export default {
       } else {
         const selectList = this.leftData.selectList
         if (selectList.length > 0 && selectList.indexOf(data.id) !== -1) {
-          selectList.splice(selectList.indexOf(data.id), 1)
+          this.leftData.selectList.splice(selectList.indexOf(data.id), 1)
         }
       }
     },
@@ -170,7 +158,7 @@ export default {
       } else {
         const selectList = this.rightData.selectList
         if (selectList.length > 0 && selectList.indexOf(data.id) !== -1) {
-          selectList.splice(selectList.indexOf(data.id), 1)
+          this.rightData.selectList.splice(selectList.indexOf(data.id), 1)
         }
       }
     }
