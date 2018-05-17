@@ -1,4 +1,4 @@
-import { fetchMenuTree } from '@/api/menu'
+import { fetchUserMenuTree } from '@/api/menu'
 
 const user = {
   state: {
@@ -13,9 +13,9 @@ const user = {
 
   actions: {
     // 拉起菜单
-    LoadMenuTre({ commit }, menuTree) {
+    LoadUserMenuTree({ commit }, menuTree) {
       return new Promise((resolve, reject) => {
-        fetchMenuTree(null).then(({ data }) => {
+        fetchUserMenuTree(null).then(({ data }) => {
           resolve(data)
         }).catch(error => {
           reject(error)

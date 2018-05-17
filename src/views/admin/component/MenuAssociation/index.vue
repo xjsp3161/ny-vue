@@ -12,8 +12,7 @@
             :data="leftData.treeList" 
             highlight-current 
             show-checkbox
-            :props="defaultProps" 
-            @check-change="handlerLeftTreeCheckChange"
+            :props="defaultProps"
             ref="leftTree">
           </el-tree>
         </div>
@@ -29,9 +28,8 @@
             :data="rightData.treeList" 
             highlight-current 
             show-checkbox
-            :props="defaultProps" 
-            @check-change="handlerRightTreeCheckChange"
-            ref="leftTree">
+            :props="defaultProps"
+            ref="rightTree">
           </el-tree>
         </div>
       </div>
@@ -74,7 +72,7 @@ export default {
     }
   },
   created() {
-    this.$setKeyValue(this.dialog, { title: '角色关联用户', visiable: true })
+    this.$setKeyValue(this.dialog, { title: '权限关联菜单', visiable: true })
     this.permissionId = this.data.obj.id
   },
   mounted() {
@@ -88,9 +86,7 @@ export default {
       params.permissionId = this.permissionId
       fetchPermissionNoExistMenus(params).then(({ data }) => {
         this.mloading.hide()
-        if (data != null) {
-          this.leftData.treeList = data
-        }
+        this.leftData.treeList = data != null ? data : []
       }).catch(error => {
         console.log(error)
       })
@@ -98,9 +94,7 @@ export default {
     loadPermissionMenus(params = {}) {
       params.permissionId = this.permissionId
       fetchPermissionMenus(params).then(({ data }) => {
-        if (data != null) {
-          this.rightData.treeList = data
-        }
+        this.rightData.treeList = data != null ? data : []
       }).catch(error => {
         console.log(error)
       })
@@ -109,11 +103,12 @@ export default {
       this.$emit('input', false)
     },
     clickRelation() {
-      if (!this.$empty(this.leftData.selectList)) {
+      const selectList = this.$refs.leftTree.getCheckedNodes()
+      if (!this.$empty(selectList)) {
         this.$setKeyValue(this.leftData.button, { text: '关联中..', loading: true })
         const params = []
-        this.leftData.selectList.forEach(element => {
-          params.push({ menuId: element, permissionId: this.permissionId })
+        selectList.forEach(item => {
+          params.push({ menuId: item.id, permissionId: this.permissionId })
         })
         crudPermissionMenus('post', '/admin/api/sysPermission/batchPermissionMenus', params).then(({ data }) => {
           this.$setKeyValue(this.leftData.button, { text: '关联', loading: false })
@@ -126,12 +121,14 @@ export default {
       }
     },
     clickCancelRelation() {
-      if (!this.$empty(this.rightData.selectList)) {
+      const selectList = this.$refs.rightTree.getCheckedNodes()
+      if (!this.$empty(selectList)) {
         this.$setKeyValue(this.rightData.button, { text: '取消关联中..', loading: true })
-        const params = { permissionId: this.permissionId, menuIds: [] }
-        this.rightData.selectList.forEach(element => {
-          params.menuIds.push(element)
+        const menuIds = []
+        selectList.forEach(item => {
+          menuIds.push(item.id)
         })
+        const params = { permissionId: this.permissionId, menuIds: menuIds }
         crudPermissionMenus('post', '/admin/api/sysPermission/cancelPermissionMenus', params).then(() => {
           this.$setKeyValue(this.rightData.button, { text: '取消关联', loading: false })
           this.loadPermissionNoExistMenus()
@@ -140,26 +137,6 @@ export default {
           this.$setKeyValue(this.rightData.button, { text: '取消关联', loading: false })
           this.$message({ type: 'error', message: '取消关联失败' })
         })
-      }
-    },
-    handlerLeftTreeCheckChange(data, checked, indeterminate) {
-      if (checked) {
-        this.leftData.selectList.push(data.id)
-      } else {
-        const selectList = this.leftData.selectList
-        if (selectList.length > 0 && selectList.indexOf(data.id) !== -1) {
-          this.leftData.selectList.splice(selectList.indexOf(data.id), 1)
-        }
-      }
-    },
-    handlerRightTreeCheckChange(data, checked, indeterminate) {
-      if (checked) {
-        this.rightData.selectList.push(data.id)
-      } else {
-        const selectList = this.rightData.selectList
-        if (selectList.length > 0 && selectList.indexOf(data.id) !== -1) {
-          this.rightData.selectList.splice(selectList.indexOf(data.id), 1)
-        }
       }
     }
   }
