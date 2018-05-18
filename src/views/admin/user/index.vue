@@ -43,7 +43,6 @@
     </el-pagination>
   </table-contain> 
   <add v-if="add.visiable" v-model="add.visiable" :data="add.data" @add="handleCurrentChange(1)" @edit="fetchData"></add>
-  <user-role v-if="userRole.visiable" v-model="userRole.visiable" :data="userRole.data"></user-role>
   <relation-dialog v-if="relationDialog.visiable" v-model="relationDialog.visiable" :data="relationDialog.data"></relation-dialog>
 </div>
 </template>
@@ -51,12 +50,11 @@
 import { fetchList, crud } from '@/api/user.js'
 import model from '@/public/indexModel.js'
 import Add from './add.vue'
-import UserRole from '../component/UserRole'
 import RelationDialog from '../component/RelationDialog'
 export default {
   mixins: [model],
   name: 'user',
-  components: { Add, UserRole, RelationDialog },
+  components: { Add, RelationDialog },
   data() {
     return {
       searchBarData: [
@@ -73,13 +71,6 @@ export default {
           { type: 'add', name: '新增' }
         ]
       ],
-      userRole: {
-        visiable: false,
-        data: {
-          type: 'role',
-          title: '用户关联角色'
-        }
-      },
       relationDialog: {
         visiable: false,
         data: {
@@ -154,7 +145,6 @@ export default {
       })
     },
     clickShowRelationDialog(index, row) {
-      // this.$setKeyValue(this.userRole, { visiable: true, data: { obj: row }})
       this.relationDialog.data.obj = row
       this.relationDialog.visiable = true
     }

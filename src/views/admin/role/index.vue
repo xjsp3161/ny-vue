@@ -14,6 +14,7 @@
       <el-table-column prop="description" label="描述" align="center"></el-table-column>
       <el-table-column label="操作" align="center" width="180">
         <template slot-scope="scope">
+          <el-button type="primary" size="mini" @click="clickShowRelationDialog(scope.$index, scope.row)">关联权限</el-button>
           <el-button type="primary" size="mini" @click="clickEdit(scope.$index, scope.row)">编辑</el-button>
           <el-button type="danger" size="mini" @click="clickDelete(scope.$index, scope.row)">删除</el-button>
         </template>
@@ -31,16 +32,18 @@
     </el-pagination>
   </table-contain> 
   <add v-if="add.visiable" v-model="add.visiable" :data="add.data" @add="handleCurrentChange(1)" @edit="fetchData"></add>
+  <relation-dialog v-if="relationDialog.visiable" v-model="relationDialog.visiable" :data="relationDialog.data"></relation-dialog>
 </div>
 </template>
 <script>
 import { fetchList, crud } from '@/api'
 import model from '@/public/indexModel.js'
 import Add from './add.vue'
+import RelationDialog from '../component/RelationDialog'
 export default {
   mixins: [model],
   name: 'user',
-  components: { Add },
+  components: { Add, RelationDialog },
   data() {
     return {
       searchBarData: [
@@ -52,7 +55,24 @@ export default {
         [
           { type: 'add', name: '新增' }
         ]
-      ]
+      ],
+      relationDialog: {
+        visiable: false,
+        data: {
+          type: 'rolePermission',
+          title: '角色',
+          relation: '权限',
+          idKey: 'roleId',
+          relationIdKey: 'permissionId',
+          multipleIdKey: 'permissionIds',
+          urls: {
+            noRelation: '/admin/api/sysRolePermission/roleNoRelationPermissionList',
+            relation: '/admin/api/sysRolePermission/rolePermissionList',
+            batchSave: '/admin/api/sysRolePermission/batchSave',
+            batchDelete: '/admin/api/sysRolePermission/batchDelete'
+          }
+        }
+      }
     }
   },
   mounted() {
@@ -108,6 +128,10 @@ export default {
           this.$message({ type: 'error', message: '删除失败!' })
         })
       })
+    },
+    clickShowRelationDialog(index, row) {
+      this.relationDialog.data.obj = row
+      this.relationDialog.visiable = true
     }
   }
 }

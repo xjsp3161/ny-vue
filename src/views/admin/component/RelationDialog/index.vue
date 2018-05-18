@@ -10,13 +10,13 @@
             <el-table-column :label="noRelationText" prop="name"></el-table-column>
           </el-table>
           <el-pagination
-            @size-change="handleSizeChange"
-            @current-change="handleCurrentChange"
-            :current-page="pagination.page"
-            :page-sizes="pagination.pageSizes"
-            :page-size="pagination.size"
+            @size-change="handleLeftSizeChange"
+            @current-change="handleLeftCurrentChange"
+            :current-page="leftData.pagination.page"
+            :page-sizes="leftData.pagination.pageSizes"
+            :page-size="leftData.pagination.size"
             layout="total, sizes, prev, pager, next"
-            :total="pagination.total">
+            :total="leftData.pagination.total">
           </el-pagination>
         </div>
         <div class="center-layout">
@@ -28,153 +28,21 @@
             <el-table-column type="selection" width="55"></el-table-column>
             <el-table-column :label="relationText" prop="name"></el-table-column>
           </el-table>
+          <el-pagination
+            @size-change="handleRightSizeChange"
+            @current-change="handleRightCurrentChange"
+            :current-page="rightData.pagination.page"
+            :page-sizes="rightData.pagination.pageSizes"
+            :page-size="rightData.pagination.size"
+            layout="total, sizes, prev, pager, next"
+            :total="rightData.pagination.total">
+          </el-pagination>
         </div>
       </div>
     </el-dialog>
   </div>
 </template>
-<script>
-import parent from '@/public/parent.js'
-import addModel from '@/public/addModel.js'
-import { noRelation, relation, batchSave, batchDelete } from '@/api/adminRelationDialog'
-export default {
-  name: 'relation-dialog',
-  mixins: [parent, addModel],
-  data() {
-    return {
-      leftData: {
-        filterName: null,
-        tableData: null,
-        multipleSelection: null,
-        button: {
-          text: '关联',
-          loading: false
-        }
-      },
-      rightData: {
-        filterName: null,
-        tableData: null,
-        multipleSelection: null,
-        button: {
-          text: '取消关联',
-          loading: false
-        }
-      },
-      urls: {
-        noRelation: null,
-        relation: null,
-        batchSave: null,
-        batchDelete: null
-      },
-      relationText: null,
-      noRelationText: null,
-      pagination: {
-        pageSizes: [10, 20, 50, 100], // 默认分页可选择的每页显示的页数
-        size: 20, // 分页每页默认显示10条
-        page: 1, // 当前默认第一页
-        total: 0 // 总条数
-      },
-      idKey: null,
-      idVal: null,
-      relationIdKey: null,
-      multipleIdKey: null
-    }
-  },
-  created() {
-    this.noRelationText = '未关联' + this.data.relation
-    this.relationText = '已关联' + this.data.relation
-    const title = this.data.title + '关联' + this.data.relation
-    this.$setKeyValue(this.dialog, { title: title, visiable: true })
-    this.idKey = this.data.idKey
-    this.idVal = this.data.obj.id
-    this.relationIdKey = this.data.relationIdKey
-    this.multipleIdKey = this.data.multipleIdKey
-    this.$setKeyValue(this.urls, this.data.urls)
-  },
-  mounted() {
-    this.createDefaultMLoading('.el-dialog')
-    this.loadNoRelation()
-    this.loadRelation()
-  },
-  methods: {
-    loadNoRelation(params = {}) {
-      this.mloading.show()
-      const { page, size } = this.pagination
-      params.page = page
-      params.size = size
-      params[[this.idKey]] = this.idVal
-      params.name = null
-      noRelation(this.urls.noRelation, params).then(({ data }) => {
-        this.mloading.hide()
-        this.leftData.tableData = data.data
-        this.pagination.total = data.total
-      }).catch(error => {
-        console.log(error)
-      })
-    },
-    loadRelation(params = {}) {
-      params[[this.idKey]] = this.idVal
-      params.name = null
-      relation(this.urls.relation, params).then(({ data }) => {
-        this.rightData.tableData = data
-      }).catch(error => {
-        console.log(error)
-      })
-    },
-    closeDialog() {
-      this.$emit('input', false)
-    },
-    handleSizeChange(val) {
-      this.pagination.size = val
-      this.loadNoRelation()
-    },
-    handleCurrentChange(val) {
-      this.pagination.page = val
-      this.loadNoRelation()
-    },
-    handleLeftSelectionChange(val) {
-      this.leftData.multipleSelection = val
-    },
-    handleRightSelectionChange(val) {
-      this.rightData.multipleSelection = val
-    },
-    clickRelation() {
-      if (!this.$empty(this.leftData.multipleSelection)) {
-        this.$setKeyValue(this.leftData.button, { text: '关联中..', loading: true })
-        const params = []
-        this.leftData.multipleSelection.forEach(element => {
-          params.push({ [this.relationIdKey]: element.id, [this.idKey]: this.idVal })
-        })
-        batchSave(this.urls.batchSave, params).then(({ data }) => {
-          this.$setKeyValue(this.leftData.button, { text: '关联', loading: false })
-          this.loadNoRelation()
-          this.loadRelation()
-        }).catch(() => {
-          this.$setKeyValue(this.leftData.button, { text: '关联', loading: false })
-          this.$message({ type: 'error', message: '关联失败' })
-        })
-      }
-    },
-    clickCancelRelation() {
-      if (!this.$empty(this.rightData.multipleSelection)) {
-        this.$setKeyValue(this.rightData.button, { text: '取消关联中..', loading: true })
-        const params = { [this.idKey]: this.idVal, [this.multipleIdKey]: [] }
-        this.rightData.multipleSelection.forEach(element => {
-          params.roleIds.push(element.id)
-        })
-        batchDelete(this.urls.batchDelete, params).then(({ data }) => {
-          this.$setKeyValue(this.rightData.button, { text: '取消关联', loading: false })
-          this.loadNoRelation()
-          this.loadRelation()
-        }).catch(() => {
-          this.$setKeyValue(this.rightData.button, { text: '关联', loading: false })
-          this.$message({ type: 'error', message: '取消关联失败' })
-        })
-      }
-    }
-  }
-}
-</script>
+<script src="./index.js"></script>
 <style lang="scss" scoped>
 .content-layout{
   width: 100%;
