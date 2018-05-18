@@ -5,9 +5,6 @@
         <el-form-item label="名称" prop="name" :rules="[{validator: rules.existName, trigger:'blur', required: true, data: data.obj}]">
           <el-input size="small" class="w180" placeholder="请输入" v-model="form.name"></el-input>
         </el-form-item>
-        <el-form-item label="编码" prop="code">
-          <el-input size="small" class="w180" placeholder="请输入" v-model="form.code"></el-input>
-        </el-form-item>
         <el-form-item label="URL" prop="url" :rules="[{validator: rules.existUrl, trigger:'blur', required: true, data: data.obj}]">
           <el-input size="small" class="w180" placeholder="请输入" v-model="form.url"></el-input>
         </el-form-item>
@@ -42,7 +39,6 @@ export default {
     return {
       form: {
         id: null,
-        code: null,
         name: null,
         url: null,
         urlRequestType: null,
@@ -51,10 +47,10 @@ export default {
       },
       options: {
         urlRequestTypes: [
-          { value: 'Get', label: 'Get' },
-          { value: 'Post', label: 'Post' },
-          { value: 'Put', label: 'Put' },
-          { value: 'Delete', label: 'Delete' }
+          { value: 'GET', label: 'GET' },
+          { value: 'POST', label: 'POST' },
+          { value: 'PUT', label: 'PUT' },
+          { value: 'DELETE', label: 'DELETE' }
         ],
         status: [
           { value: 0, label: '禁用' },

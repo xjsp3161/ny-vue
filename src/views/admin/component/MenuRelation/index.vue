@@ -1,5 +1,5 @@
 <template>
-  <div id="menu-association">
+  <div id="menu-relation">
     <el-dialog :title="dialog.title" width="1000px" :visible.sync="dialog.visiable" @close="closeDialog">
       <div class="content-layout">
         <div class="left-layout">
@@ -39,10 +39,9 @@
 <script>
 import parent from '@/public/parent.js'
 import addModel from '@/public/addModel.js'
-import { fetchPermissionNoExistMenus, fetchPermissionMenus } from '@/api/menu'
-import { crudPermissionMenus } from '@/api/permissionMenu'
+import { noRelation, relation, batchSave, batchDelete } from '@/api/permissionMenu'
 export default {
-  name: 'menu-association',
+  name: 'menu-relation',
   mixins: [parent, addModel],
   data() {
     return {
@@ -77,23 +76,23 @@ export default {
   },
   mounted() {
     this.createDefaultMLoading('.el-dialog')
-    this.loadPermissionNoExistMenus()
-    this.loadPermissionMenus()
+    this.loadNoRelation()
+    this.loadRelation()
   },
   methods: {
-    loadPermissionNoExistMenus(params = {}) {
+    loadNoRelation(params = {}) {
       this.mloading.show()
       params.permissionId = this.permissionId
-      fetchPermissionNoExistMenus(params).then(({ data }) => {
+      noRelation(params).then(({ data }) => {
         this.mloading.hide()
         this.leftData.treeList = data != null ? data : []
       }).catch(error => {
         console.log(error)
       })
     },
-    loadPermissionMenus(params = {}) {
+    loadRelation(params = {}) {
       params.permissionId = this.permissionId
-      fetchPermissionMenus(params).then(({ data }) => {
+      relation(params).then(({ data }) => {
         this.rightData.treeList = data != null ? data : []
       }).catch(error => {
         console.log(error)
@@ -110,10 +109,10 @@ export default {
         selectList.forEach(item => {
           params.push({ menuId: item.id, permissionId: this.permissionId })
         })
-        crudPermissionMenus('post', '/admin/api/sysPermission/batchPermissionMenus', params).then(({ data }) => {
+        batchSave(params).then(({ data }) => {
           this.$setKeyValue(this.leftData.button, { text: '关联', loading: false })
-          this.loadPermissionNoExistMenus()
-          this.loadPermissionMenus()
+          this.loadNoRelation()
+          this.loadRelation()
         }).catch(() => {
           this.$setKeyValue(this.leftData.button, { text: '关联', loading: false })
           this.$message({ type: 'error', message: '关联失败' })
@@ -129,10 +128,10 @@ export default {
           menuIds.push(item.id)
         })
         const params = { permissionId: this.permissionId, menuIds: menuIds }
-        crudPermissionMenus('post', '/admin/api/sysPermission/cancelPermissionMenus', params).then(() => {
+        batchDelete(params).then(() => {
           this.$setKeyValue(this.rightData.button, { text: '取消关联', loading: false })
-          this.loadPermissionNoExistMenus()
-          this.loadPermissionMenus()
+          this.loadNoRelation()
+          this.loadRelation()
         }).catch(() => {
           this.$setKeyValue(this.rightData.button, { text: '取消关联', loading: false })
           this.$message({ type: 'error', message: '取消关联失败' })

@@ -1,5 +1,5 @@
 <template>
-  <div id="user-association">
+  <div id="user-role">
     <el-dialog :title="dialog.title" width="1000px" :visible.sync="dialog.visiable" @close="closeDialog">
       <div class="content-layout">
         <div class="left-layout">
@@ -7,7 +7,7 @@
           <p><el-button size="mini" @click="clickRelation" :disabled="leftData.button.disabled" v-loading="leftData.button.loading" plain>{{leftData.button.text}}</el-button></p>
           <el-table ref="leftTable" :data="leftData.tableData" size="mini" style="width: 100%" height="400" @selection-change="handleLeftSelectionChange">
             <el-table-column type="selection" width="55"></el-table-column>
-            <el-table-column label="未关联用户" prop="username"></el-table-column>
+            <el-table-column label="未关联角色" prop="name"></el-table-column>
           </el-table>
           <el-pagination
             @size-change="handleSizeChange"
@@ -26,7 +26,7 @@
           <p><el-button size="mini" @click="clickCancelRelation" v-loading="rightData.button.loading" plain>{{rightData.button.text}}</el-button></p>
           <el-table ref="leftTable" :data="rightData.tableData" height="400" size="mini" style="width: 100%" @selection-change="handleRightSelectionChange">
             <el-table-column type="selection" width="55"></el-table-column>
-            <el-table-column label="已关联用户" prop="username"></el-table-column>
+            <el-table-column label="已关联角色" prop="name"></el-table-column>
           </el-table>
         </div>
       </div>
@@ -36,10 +36,9 @@
 <script>
 import parent from '@/public/parent.js'
 import addModel from '@/public/addModel.js'
-import { fetchRoleNoExistUsers, fetchRoleUsers } from '@/api/user'
-import { crudRoleUser } from '@/api/roleUser'
+import { noRelation, relation, batchSave, batchDelete } from '@/api/userRole'
 export default {
-  name: 'user-association',
+  name: 'user-role',
   mixins: [parent, addModel],
   data() {
     return {
@@ -72,22 +71,22 @@ export default {
   },
   created() {
     this.$setKeyValue(this.dialog, { title: '角色关联用户', visiable: true })
-    this.roleId = this.data.obj.id
+    this.userId = this.data.obj.id
   },
   mounted() {
     this.createDefaultMLoading('.el-dialog')
-    this.loadRoleNoExistUsers()
-    this.loadRoleUsers()
+    this.loadNoRelation()
+    this.loadRelation()
   },
   methods: {
-    loadRoleNoExistUsers(params = {}) {
+    loadNoRelation(params = {}) {
       this.mloading.show()
       const { page, size } = this.pagination
       params.page = page
       params.size = size
-      params.roleId = this.roleId
+      params.userId = this.userId
       params.name = null
-      fetchRoleNoExistUsers(params).then(({ data }) => {
+      noRelation(params).then(({ data }) => {
         this.mloading.hide()
         this.leftData.tableData = data.data
         this.pagination.total = data.total
@@ -95,10 +94,10 @@ export default {
         console.log(error)
       })
     },
-    loadRoleUsers(params = {}) {
-      params.roleId = this.roleId
+    loadRelation(params = {}) {
+      params.userId = this.userId
       params.name = null
-      fetchRoleUsers(params).then(({ data }) => {
+      relation(params).then(({ data }) => {
         this.rightData.tableData = data
       }).catch(error => {
         console.log(error)
@@ -109,11 +108,11 @@ export default {
     },
     handleSizeChange(val) {
       this.pagination.size = val
-      this.loadRoleNoExistUsers()
+      this.loadNoRelation()
     },
     handleCurrentChange(val) {
       this.pagination.page = val
-      this.loadRoleNoExistUsers()
+      this.loadNoRelation()
     },
     handleLeftSelectionChange(val) {
       this.leftData.multipleSelection = val
@@ -126,12 +125,12 @@ export default {
         this.$setKeyValue(this.leftData.button, { text: '关联中..', loading: true })
         const params = []
         this.leftData.multipleSelection.forEach(element => {
-          params.push({ userId: element.id, roleId: this.roleId })
+          params.push({ roleId: element.id, userId: this.userId })
         })
-        crudRoleUser('post', '/admin/api/sysRole/batchRoleUsers', params).then(({ data }) => {
+        batchSave(params).then(({ data }) => {
           this.$setKeyValue(this.leftData.button, { text: '关联', loading: false })
-          this.loadRoleNoExistUsers()
-          this.loadRoleUsers()
+          this.loadNoRelation()
+          this.loadRelation()
         }).catch(() => {
           this.$setKeyValue(this.leftData.button, { text: '关联', loading: false })
           this.$message({ type: 'error', message: '关联失败' })
@@ -141,14 +140,14 @@ export default {
     clickCancelRelation() {
       if (!this.$empty(this.rightData.multipleSelection)) {
         this.$setKeyValue(this.rightData.button, { text: '取消关联中..', loading: true })
-        const params = { roleId: this.roleId, userIds: [] }
+        const params = { userId: this.userId, roleIds: [] }
         this.rightData.multipleSelection.forEach(element => {
-          params.userIds.push(element.id)
+          params.roleIds.push(element.id)
         })
-        crudRoleUser('post', '/admin/api/sysRole/cancelRoleUsers', params).then(({ data }) => {
+        batchDelete(params).then(({ data }) => {
           this.$setKeyValue(this.rightData.button, { text: '取消关联', loading: false })
-          this.loadRoleNoExistUsers()
-          this.loadRoleUsers()
+          this.loadNoRelation()
+          this.loadRelation()
         }).catch(() => {
           this.$setKeyValue(this.rightData.button, { text: '关联', loading: false })
           this.$message({ type: 'error', message: '取消关联失败' })

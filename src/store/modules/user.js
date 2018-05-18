@@ -1,4 +1,5 @@
 import { loginByUsername, logout, getUserInfo } from '@/api/login'
+import { fetchUserMenuTree } from '@/api/user'
 import { getToken, setToken, removeToken } from '@/utils/auth'
 
 const user = {
@@ -13,7 +14,8 @@ const user = {
     roles: [],
     setting: {
       articlePlatform: []
-    }
+    },
+    menuTree: null
   },
 
   mutations: {
@@ -40,6 +42,9 @@ const user = {
     },
     SET_ROLES: (state, roles) => {
       state.roles = roles
+    },
+    SET_MENU_TREE: (state, menuTree) => {
+      state.menuTree = menuTree
     }
   },
 
@@ -71,6 +76,17 @@ const user = {
           commit('SET_AVATAR', data.avatar)
           commit('SET_INTRODUCTION', data.introduction)
           resolve(response)
+        }).catch(error => {
+          reject(error)
+        })
+      })
+    },
+
+    // 拉起菜单
+    LoadUserMenuTree({ commit }, menuTree) {
+      return new Promise((resolve, reject) => {
+        fetchUserMenuTree(null).then(({ data }) => {
+          resolve(data)
         }).catch(error => {
           reject(error)
         })

@@ -31,18 +31,18 @@
     </el-pagination>
   </table-contain> 
   <add v-if="add.visiable" v-model="add.visiable" :data="add.data" @add="handleCurrentChange(1)" @edit="fetchData"></add>
-  <menu-association v-if="menuAssociation.visiable" v-model="menuAssociation.visiable" :data="menuAssociation.data"></menu-association>
+  <menu-relation v-if="menuRelation.visiable" v-model="menuRelation.visiable" :data="menuRelation.data"></menu-relation>
 </div>
 </template>
 <script>
 import { fetchList, crud } from '@/api'
 import model from '@/public/indexModel.js'
 import Add from './add.vue'
-import MenuAssociation from '../component/MenuAssociation'
+import MenuRelation from '../component/MenuRelation'
 export default {
   mixins: [model],
   name: 'permission',
-  components: { Add, MenuAssociation },
+  components: { Add, MenuRelation },
   data() {
     return {
       searchBarData: [
@@ -55,7 +55,7 @@ export default {
           { type: 'add', name: '新增' }
         ]
       ],
-      menuAssociation: {
+      menuRelation: {
         visiable: false,
         data: {
           type: 'role',
@@ -119,7 +119,7 @@ export default {
       })
     },
     clickShowMenuAssociation(index, row) {
-      this.$setKeyValue(this.menuAssociation, { visiable: true, data: { obj: row }})
+      this.$setKeyValue(this.menuRelation, { visiable: true, data: { obj: row }})
     }
   }
 }

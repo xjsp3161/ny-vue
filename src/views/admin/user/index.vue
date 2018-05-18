@@ -10,14 +10,7 @@
         </template>
       </el-table-column>
       <el-table-column prop="username" label="用户名" align="center"></el-table-column>
-      <el-table-column prop="nickname" label="昵称" align="center"></el-table-column>
-      <!-- <el-table-column prop="status" label="密码" align="center">
-        <template slot-scope="scope">
-          <span v-if="scope.row.autoGenerateType === 0">不自动生成条码</span>
-          <span v-else-if="scope.row.autoGenerateType === 1">商品编码+颜色编码+尺码</span>
-          <span v-else-if="scope.row.autoGenerateType === 2">商品编码+尺码</span>
-        </template>
-      </el-table-column> -->
+      <el-table-column prop="name" label="姓名" align="center"></el-table-column>
       <el-table-column prop="enable" label="状态" align="center">
         <template slot-scope="scope">
           <template v-if="scope.row.status == 0">
@@ -32,7 +25,8 @@
       <el-table-column prop="lastPasswordChange" label="最后更新时间" align="center"></el-table-column>
       <el-table-column label="操作" align="center" width="180">
         <template slot-scope="scope">
-         <el-button type="primary" size="mini" @click="clickEdit(scope.$index, scope.row)">编辑</el-button>
+          <el-button type="primary" size="mini" @click="clickShowRelationDialog(scope.$index, scope.row)">关联角色</el-button>
+          <el-button type="primary" size="mini" @click="clickEdit(scope.$index, scope.row)">编辑</el-button>
           <el-button type="danger" size="mini" @click="clickDelete(scope.$index, scope.row)">删除</el-button>
         </template>
       </el-table-column>
@@ -49,16 +43,20 @@
     </el-pagination>
   </table-contain> 
   <add v-if="add.visiable" v-model="add.visiable" :data="add.data" @add="handleCurrentChange(1)" @edit="fetchData"></add>
+  <user-role v-if="userRole.visiable" v-model="userRole.visiable" :data="userRole.data"></user-role>
+  <relation-dialog v-if="relationDialog.visiable" v-model="relationDialog.visiable" :data="relationDialog.data"></relation-dialog>
 </div>
 </template>
 <script>
 import { fetchList, crud } from '@/api/user.js'
 import model from '@/public/indexModel.js'
 import Add from './add.vue'
+import UserRole from '../component/UserRole'
+import RelationDialog from '../component/RelationDialog'
 export default {
   mixins: [model],
   name: 'user',
-  components: { Add },
+  components: { Add, UserRole, RelationDialog },
   data() {
     return {
       searchBarData: [
@@ -73,9 +71,32 @@ export default {
         ],
         [
           { type: 'add', name: '新增' }
-          // { type: 'more', labels: ['导入', '上传图片'] }
         ]
-      ]
+      ],
+      userRole: {
+        visiable: false,
+        data: {
+          type: 'role',
+          title: '用户关联角色'
+        }
+      },
+      relationDialog: {
+        visiable: false,
+        data: {
+          type: 'userRole',
+          title: '用户',
+          relation: '角色',
+          idKey: 'userId',
+          relationIdKey: 'roleId',
+          multipleIdKey: 'roleIds',
+          urls: {
+            noRelation: '/admin/api/sysUserRole/userNoRelationRoleList',
+            relation: '/admin/api/sysUserRole/userRoleList',
+            batchSave: '/admin/api/sysUserRole/batchSave',
+            batchDelete: '/admin/api/sysUserRole/batchDelete'
+          }
+        }
+      }
     }
   },
   mounted() {
@@ -131,6 +152,11 @@ export default {
           this.$message({ type: 'error', message: '删除失败!' })
         })
       })
+    },
+    clickShowRelationDialog(index, row) {
+      // this.$setKeyValue(this.userRole, { visiable: true, data: { obj: row }})
+      this.relationDialog.data.obj = row
+      this.relationDialog.visiable = true
     }
   }
 }

@@ -10,7 +10,6 @@
         </template>
       </el-table-column>
       <el-table-column prop="name" label="名称" align="center"></el-table-column>
-      <el-table-column prop="code" label="编码" align="center"></el-table-column>
       <el-table-column prop="url" label="URL" align="center"></el-table-column>
       <el-table-column prop="urlRequestType" label="URL请求类型" align="center"></el-table-column>
       <el-table-column prop="description" label="描述" align="center"></el-table-column>
@@ -57,7 +56,7 @@ export default {
     return {
       searchBarData: [
         [
-          { type: 'input', value: null, key: 'nameOrCode', placeholder: '编码或名称模糊检索', class: 'w130' },
+          { type: 'input', value: null, key: 'name', placeholder: '编码或名称模糊检索', class: 'w130' },
           { type: 'search', name: '查询' },
           { type: 'reset', name: '重置' }
         ],

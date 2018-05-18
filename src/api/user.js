@@ -20,6 +20,14 @@ export function crud(method, params) {
   })
 }
 
+export function fetchUserMenuTree(query) {
+  return request({
+    url: '/admin/api/sysUser/userMenuTree',
+    method: 'get',
+    params: query
+  })
+}
+
 export function checkNameOrCodeExist(query) {
   return request({
     url: 'foundation/v1.0/api/goodsBranch/exists',

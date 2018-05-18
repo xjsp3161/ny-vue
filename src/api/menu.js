@@ -8,20 +8,12 @@ export function fetchMenuTree(query) {
   })
 }
 
-export function fetchUserMenuTree(query) {
-  return request({
-    url: '/admin/api/sysMenu/userMenus',
-    method: 'get',
-    params: query
-  })
-}
-
 export function curdMenu(method, params) {
   const methods = ['get', 'delete']
   const key = methods.includes(method) ? 'params' : 'data'
   if (methods.indexOf(method) >= 0) {
     return request({
-      url: '/admin/api/sysMenu/' + params.id,
+      url: '/admin/api/sysMenu',
       method: method
     })
   } else {
