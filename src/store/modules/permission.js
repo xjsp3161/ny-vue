@@ -42,7 +42,6 @@ const permission = {
       return new Promise(resolve => {
         const { roles } = data
         const consoleRoles = filterRouter(roles)
-        console.log(consoleRoles)
         commit('SET_ROUTERS', consoleRoles)
         resolve()
       })

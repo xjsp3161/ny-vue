@@ -39,7 +39,7 @@
 import { fetchList, crud } from '@/api'
 import model from '@/public/indexModel.js'
 import Add from './add.vue'
-import RelationDialog from '../component/RelationDialog'
+import RelationDialog from '../component/RelationDialog/index.vue'
 export default {
   mixins: [model],
   name: 'user',

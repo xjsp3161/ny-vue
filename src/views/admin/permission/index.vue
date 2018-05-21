@@ -11,9 +11,10 @@
       </el-table-column>
       <el-table-column prop="name" label="权限名称" align="center"></el-table-column>
       <el-table-column prop="description" label="描述" align="center"></el-table-column>
-      <el-table-column label="操作" align="center" width="180">
+      <el-table-column label="操作" align="center">
         <template slot-scope="scope">
           <el-button type="primary" size="mini" @click="clickShowMenuAssociation(scope.$index, scope.row)">关联菜单</el-button>
+          <el-button type="primary" size="mini" @click="clickShowResourceRelationDialog(scope.$index, scope.row)">关联资源</el-button>
          <el-button type="primary" size="mini" @click="clickEdit(scope.$index, scope.row)">编辑</el-button>
           <el-button type="danger" size="mini" @click="clickDelete(scope.$index, scope.row)">删除</el-button>
         </template>
@@ -32,17 +33,19 @@
   </table-contain> 
   <add v-if="add.visiable" v-model="add.visiable" :data="add.data" @add="handleCurrentChange(1)" @edit="fetchData"></add>
   <menu-relation v-if="menuRelation.visiable" v-model="menuRelation.visiable" :data="menuRelation.data"></menu-relation>
+  <relation-dialog v-if="resourceRelationDialog.visiable" v-model="resourceRelationDialog.visiable" :data="resourceRelationDialog.data"></relation-dialog>
 </div>
 </template>
 <script>
 import { fetchList, crud } from '@/api'
 import model from '@/public/indexModel.js'
 import Add from './add.vue'
-import MenuRelation from '../component/MenuRelation'
+import MenuRelation from '../component/MenuRelation/index.vue'
+import RelationDialog from '../component/RelationDialog/index.vue'
 export default {
   mixins: [model],
   name: 'permission',
-  components: { Add, MenuRelation },
+  components: { Add, MenuRelation, RelationDialog },
   data() {
     return {
       searchBarData: [
@@ -60,6 +63,23 @@ export default {
         data: {
           type: 'role',
           title: '角色关联用户'
+        }
+      },
+      resourceRelationDialog: {
+        visiable: false,
+        data: {
+          type: 'permissionResource',
+          title: '权限',
+          relation: '资源',
+          idKey: 'permissionId',
+          relationIdKey: 'resourceId',
+          multipleIdKey: 'resourceIds',
+          urls: {
+            noRelation: '/admin/api/sysPermissionResource/permissionNoRelationResourceList',
+            relation: '/admin/api/sysPermissionResource/permissionResourceList',
+            batchSave: '/admin/api/sysPermissionResource/batchSave',
+            batchDelete: '/admin/api/sysPermissionResource/batchDelete'
+          }
         }
       }
     }
@@ -120,6 +140,10 @@ export default {
     },
     clickShowMenuAssociation(index, row) {
       this.$setKeyValue(this.menuRelation, { visiable: true, data: { obj: row }})
+    },
+    clickShowResourceRelationDialog(index, row) {
+      this.resourceRelationDialog.data.obj = row
+      this.resourceRelationDialog.visiable = true
     }
   }
 }

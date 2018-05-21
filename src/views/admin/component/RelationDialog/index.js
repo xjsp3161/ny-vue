@@ -1,9 +1,9 @@
 import parent from '@/public/parent.js'
-import model from './model'
 import addModel from '@/public/addModel.js'
+import model from './model'
 import { noRelation, relation, batchSave, batchDelete } from '@/api/adminRelationDialog'
 export default {
-  name: 'relation-dialog',
+  name: 'RelationDialog',
   mixins: [parent, addModel, model],
   created() {
     this.noRelationText = '未关联' + this.data.relation

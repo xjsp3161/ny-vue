@@ -50,7 +50,7 @@
 import { fetchList, crud } from '@/api/user.js'
 import model from '@/public/indexModel.js'
 import Add from './add.vue'
-import RelationDialog from '../component/RelationDialog'
+import RelationDialog from '../component/RelationDialog/index.vue'
 export default {
   mixins: [model],
   name: 'user',
@@ -151,5 +151,3 @@ export default {
   }
 }
 </script>
-<style lang="scss" scoped>
-</style>
