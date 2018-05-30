@@ -9,10 +9,12 @@
           <span>{{scope.$index + 1}}</span>
         </template>
       </el-table-column>
-      <el-table-column prop="name" label="名称" align="center"></el-table-column>
-      <el-table-column prop="url" label="URL" align="center"></el-table-column>
+      <el-table-column prop="name" label="接口名称" align="center"></el-table-column>
+      <el-table-column prop="pageElements" label="页面元素" align="center"></el-table-column>
+      <el-table-column prop="code" label="编码" align="center"></el-table-column>
+      <el-table-column prop="url" label="接口URL" align="center"></el-table-column>
       <el-table-column prop="urlRequestType" label="URL请求类型" align="center"></el-table-column>
-      <el-table-column prop="description" label="描述" align="center"></el-table-column>
+      <el-table-column prop="description" label="接口描述" align="center"></el-table-column>
       <el-table-column prop="status" label="状态" align="center">
         <template slot-scope="scope">
           <template v-if="scope.row.status == 0">

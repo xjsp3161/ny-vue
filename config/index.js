@@ -12,14 +12,14 @@ module.exports = {
     assetsPublicPath: '/',
     proxyTable: {
       '/login/': {
-          target: 'http://localhost:1000',
+          target: 'http://localhost:7000',
           changeOrigin: true,
           pathRewrite: {
             '^/login': '/login'
           }
       },
       '/admin/': {
-        target: 'http://localhost:1000',
+        target: 'http://localhost:7000',
         changeOrigin: true,
         pathRewrite: {
           '^/admin': '/admin'

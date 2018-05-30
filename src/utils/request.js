@@ -17,10 +17,10 @@ service.interceptors.request.use(config => {
   if (config.url.indexOf('login/') !== -1) {
     return config
   }
-  const urls = config.url.split('/')
-  if (urls[1] === 'admin') {
-    config.url = config.url.replace('/admin', '')
-  }
+  // const urls = config.url.split('/')
+  // if (urls[1] === 'admin') {
+  //   config.url = config.url.replace('/admin', '')
+  // }
   // Do something before request is sent
   if (store.getters.token) {
     config.headers['Authorization'] = getToken() // 让每个请求携带token-- ['X-Token']为自定义key 请根据实际情况自行修改
