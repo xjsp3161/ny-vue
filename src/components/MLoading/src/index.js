@@ -12,7 +12,8 @@ const defaults = {
   fullscreen: true,
   body: false,
   lock: false,
-  customClass: ''
+  customClass: '',
+  isError: false
 }
 
 let fullscreenLoading
@@ -48,11 +49,14 @@ LoadingConstructor.prototype.error = function(text, fn) {
   this.text = text
   this.textColor = 'red'
   this.refresh = true
-  afterLeave(this, _ => {
-    this.$on('refresh', () => {
-      if (fn) fn()
+  if (!this.isError) {
+    this.isError = true
+    afterLeave(this, _ => {
+      this.$on('refresh', () => {
+        if (fn) fn()
+      })
     })
-  })
+  }
 }
 
 LoadingConstructor.prototype.reset = function() {
@@ -62,6 +66,7 @@ LoadingConstructor.prototype.reset = function() {
 }
 
 LoadingConstructor.prototype.hide = function() {
+  this.isError = false
   this.visible = false
 }
 
@@ -80,16 +85,6 @@ const addStyle = (options, parent, instance) => {
     maskStyle.zIndex = PopupManager.nextZIndex()
   } else if (options.body) {
     instance.originalPosition = getStyle(document.body, 'position')
-    // ['top', 'left'].forEach(property => {
-    //   const scroll = property === 'top' ? 'scrollTop' : 'scrollLeft'
-    //   maskStyle[property] = options.target.getBoundingClientRect()[property] +
-    //     document.body[scroll] +
-    //     document.documentElement[scroll] +
-    //     'px'
-    // })
-    // ['height', 'width'].forEach(property => {
-    //   maskStyle[property] = options.target.getBoundingClientRect()[property] + 'px'
-    // })
   } else {
     instance.originalPosition = getStyle(parent, 'position')
   }
