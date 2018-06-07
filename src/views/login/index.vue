@@ -1,7 +1,7 @@
 <template>
   <div class="login-container">
     <div class="title-container">
-      <h1> Cloudolp 数据服务有限公司 </h1>
+      <h1> Vue Template </h1>
     </div>
     <div class="form-container">
       <el-form :model="ruleForm" status-icon :rules="rules" ref="ruleForm" label-width="0" class="demo-ruleForm">

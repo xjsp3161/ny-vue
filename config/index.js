@@ -12,21 +12,21 @@ module.exports = {
     assetsPublicPath: '/',
     proxyTable: {
       '/login/': {
-          target: 'http://localhost:7000',
+          target: 'http://www.stars21.cn:7000',
           changeOrigin: true,
           pathRewrite: {
             '^/login': '/login'
           }
       },
       '/admin/': {
-        target: 'http://localhost:7000',
+        target: 'http://www.stars21.cn:7000',
         changeOrigin: true,
         pathRewrite: {
           '^/admin': '/admin'
         }
       },
       '/api/': {
-        target: 'http://localhost:8762',
+        target: 'http://www.stars21.cn:7000',
         changeOrigin: true,
         pathRewrite: {
           '^/api': '/api'
