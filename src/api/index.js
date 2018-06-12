@@ -18,3 +18,17 @@ export function crud(url, method, params) {
   })
 }
 
+export function fetchInfo(url, id) {
+  return request({
+    url: url + '/' + id,
+    method: 'get'
+  })
+}
+
+export function deleteInfo(url, id) {
+  return request({
+    url: url + '/' + id,
+    method: 'delete'
+  })
+}
+

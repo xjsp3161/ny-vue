@@ -28,9 +28,9 @@ export function fetchUserMenuTree(query) {
   })
 }
 
-export function checkNameOrCodeExist(query) {
+export function checkUserNameIsExist(query) {
   return request({
-    url: 'foundation/v1.0/api/goodsBranch/exists',
+    url: '/admin/api/sysUser/checkUserNameIsExist',
     method: 'GET',
     params: query
   })

@@ -28,11 +28,10 @@ export function logout() {
   })
 }
 
-export function getUserInfo(token) {
+export function getUserInfo() {
   return request({
-    url: '/user/info',
-    method: 'get',
-    params: { token }
+    url: '/admin/api/sysUser/userInfo',
+    method: 'get'
   })
 }
 

@@ -13,7 +13,7 @@
       <el-table-column prop="name" label="姓名" align="center"></el-table-column>
       <el-table-column prop="enable" label="状态" align="center">
         <template slot-scope="scope">
-          <template v-if="scope.row.status == 0">
+          <template v-if="scope.row.state == 0">
             <el-tag size="mini" type="info">禁用</el-tag>
           </template>
           <template v-else>
