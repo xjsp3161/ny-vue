@@ -13,8 +13,10 @@
       <el-table-column prop="code" label="用户组编码" align="center"></el-table-column>
       <el-table-column prop="parentName" label="父级名称" align="center"></el-table-column>
       <el-table-column prop="description" label="描述" align="center"></el-table-column>
-      <el-table-column label="操作" align="center" width="180">
+      <el-table-column label="操作" align="center">
         <template slot-scope="scope">
+          <el-button type="primary" size="mini" @click="clickShowUserRelationDialog(scope.$index, scope.row)">关联用户</el-button>
+          <el-button type="primary" size="mini" @click="clickShowRoleRelationDialog(scope.$index, scope.row)">关联角色</el-button>
          <el-button type="primary" size="mini" @click="clickEdit(scope.$index, scope.row)">编辑</el-button>
           <el-button type="danger" size="mini" @click="clickDelete(scope.$index, scope.row)">删除</el-button>
         </template>
@@ -32,16 +34,19 @@
     </el-pagination>
   </table-contain> 
   <add v-if="add.visiable" v-model="add.visiable" :data="add.data" @add="handleCurrentChange(1)" @edit="fetchData"></add>
+  <relation-dialog v-if="userRelationDialog.visiable" v-model="userRelationDialog.visiable" :data="userRelationDialog.data"></relation-dialog>
+  <relation-dialog v-if="roleRelationDialog.visiable" v-model="roleRelationDialog.visiable" :data="roleRelationDialog.data"></relation-dialog>
 </div>
 </template>
 <script>
 import { fetchList, crud } from '@/api'
 import model from '@/public/indexModel.js'
 import Add from './add.vue'
+import RelationDialog from '../component/RelationDialog/index.vue'
 export default {
   mixins: [model],
   name: 'group',
-  components: { Add },
+  components: { Add, RelationDialog },
   data() {
     return {
       searchBarData: [
@@ -53,7 +58,41 @@ export default {
         [
           { type: 'add', name: '新增' }
         ]
-      ]
+      ],
+      userRelationDialog: {
+        visiable: false,
+        data: {
+          type: 'userGroupPk',
+          title: '用户组',
+          relation: '用户',
+          idKey: 'groupId',
+          relationIdKey: 'userId',
+          multipleIdKey: 'userIds',
+          urls: {
+            noRelation: '/admin/api/sysUserGroupPk/groupNoRelationUserList',
+            relation: '/admin/api/sysUserGroupPk/groupUserList',
+            batchSave: '/admin/api/sysUserGroupPk/batchSave',
+            batchDelete: '/admin/api/sysUserGroupPk/batchDelete'
+          }
+        }
+      },
+      roleRelationDialog: {
+        visiable: false,
+        data: {
+          type: 'userGroupRole',
+          title: '用户组',
+          relation: '角色',
+          idKey: 'groupId',
+          relationIdKey: 'roleId',
+          multipleIdKey: 'roleIds',
+          urls: {
+            noRelation: '/admin/api/sysUserGroupRole/groupNoRelationRoleList',
+            relation: '/admin/api/sysUserGroupRole/groupRoleList',
+            batchSave: '/admin/api/sysUserGroupRole/batchSave',
+            batchDelete: '/admin/api/sysUserGroupRole/batchDelete'
+          }
+        }
+      }
     }
   },
   mounted() {
@@ -109,6 +148,14 @@ export default {
           this.$message({ type: 'error', message: '删除失败!' })
         })
       })
+    },
+    clickShowUserRelationDialog(index, row) {
+      this.userRelationDialog.data.obj = row
+      this.userRelationDialog.visiable = true
+    },
+    clickShowRoleRelationDialog(index, row) {
+      this.roleRelationDialog.data.obj = row
+      this.roleRelationDialog.visiable = true
     }
   }
 }
