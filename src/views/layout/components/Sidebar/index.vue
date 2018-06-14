@@ -3,7 +3,7 @@
     <div class="logo-layout">
       <a href="#/">
         <img align="left" src="https://gw.alipayobjects.com/zos/rmsportal/KDpgvguMpGfqaHPjicRK.svg"/>
-        <h1>Cloudolp</h1>
+        <h4>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;N&nbsp;&nbsp;&nbsp;&nbsp;Y&nbsp;&nbsp;&nbsp;&nbsp;</h4>
       </a>
     </div>
     <el-menu mode="vertical" :default-active="$route.path" :collapse="isCollapse" background-color="#001529" text-color="#bfcbd9" active-text-color="#409EFF">
@@ -64,15 +64,15 @@ export default {
     display: inline-block;
     vertical-align: middle;
   }
-  h1 {
+  h4 {
     float: left;
     width: 80px;
-    line-height: 64px;
+    line-height: 68px;
     color: #fff;
-    font-size: 20px;
+    font-size: 16px;
     margin: 0 0 0 12px;
     font-family: Myriad Pro,Helvetica Neue,Arial,Helvetica,sans-serif;
-    font-weight: 600;
+    font-weight: 400;
   }
 }
 </style>

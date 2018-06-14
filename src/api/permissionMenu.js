@@ -18,7 +18,7 @@ export function relation(query) {
 
 export function batchSave(params) {
   return request({
-    url: '/admin/api/sysPermissionMenu/batchSave',
+    url: '/admin/api/sysPermissionMenu/batchAdd',
     method: 'post',
     data: params
   })

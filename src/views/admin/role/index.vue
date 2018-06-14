@@ -68,7 +68,7 @@ export default {
           urls: {
             noRelation: '/admin/api/sysRolePermission/roleNoRelationPermissionList',
             relation: '/admin/api/sysRolePermission/rolePermissionList',
-            batchSave: '/admin/api/sysRolePermission/batchSave',
+            batchSave: '/admin/api/sysRolePermission/batchAdd',
             batchDelete: '/admin/api/sysRolePermission/batchDelete'
           }
         }

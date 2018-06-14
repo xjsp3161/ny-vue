@@ -77,7 +77,7 @@ export default {
           urls: {
             noRelation: '/admin/api/sysPermissionResource/permissionNoRelationResourceList',
             relation: '/admin/api/sysPermissionResource/permissionResourceList',
-            batchSave: '/admin/api/sysPermissionResource/batchSave',
+            batchSave: '/admin/api/sysPermissionResource/batchAdd',
             batchDelete: '/admin/api/sysPermissionResource/batchDelete'
           }
         }
