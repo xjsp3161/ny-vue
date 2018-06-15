@@ -25,7 +25,7 @@ export function fetchInfo(url, id) {
   })
 }
 
-export function deleteInfo(url, id) {
+export function deleteId(url, id) {
   return request({
     url: url + '/' + id,
     method: 'delete'

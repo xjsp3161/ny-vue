@@ -14,9 +14,11 @@
       <el-table-column prop="description" label="描述" align="center"></el-table-column>
       <el-table-column label="操作" align="center" width="180">
         <template slot-scope="scope">
-          <el-button type="primary" size="mini" @click="clickShowRelationDialog(scope.$index, scope.row)">关联权限</el-button>
-          <el-button type="primary" size="mini" @click="clickEdit(scope.$index, scope.row)">编辑</el-button>
-          <el-button type="danger" size="mini" @click="clickDelete(scope.$index, scope.row)">删除</el-button>
+          <template v-if="scope.row.code !== 'SUPER_ADMIN'">
+            <el-button type="primary" size="mini" @click="clickShowRelationDialog(scope.$index, scope.row)">关联权限</el-button>
+            <el-button type="primary" size="mini" @click="clickEdit(scope.$index, scope.row)">编辑</el-button>
+            <el-button type="danger" size="mini" @click="clickDelete(scope.$index, scope.row)">删除</el-button>
+          </template>
         </template>
       </el-table-column>
     </el-table>

@@ -8,9 +8,9 @@
         <el-form-item label="权限描述" prop="description">
           <el-input type="textarea" class="w180" :rows="2" placeholder="请输入内容" v-model="form.description"></el-input>
         </el-form-item>
-        <el-form-item label="状态" prop="status">
-          <el-select size="small" class="w180" v-model="form.status" placeholder="请选择">
-            <el-option v-for="item in options.status" :label="item.label" :key="item.value" :value="item.value"></el-option>
+        <el-form-item label="状态" prop="state">
+          <el-select size="small" class="w180" v-model="form.state" placeholder="请选择">
+            <el-option v-for="item in options.states" :label="item.label" :key="item.value" :value="item.value"></el-option>
           </el-select>
         </el-form-item>
       </el-form>
@@ -23,6 +23,7 @@
 </template>
 <script>
 import addModel from '@/public/addModel.js'
+import { fetchInfo } from '@/api/index.js'
 import { crud, checkExist } from '@/api/permission.js'
 export default {
   mixins: [addModel],
@@ -32,10 +33,10 @@ export default {
         id: null,
         name: null,
         description: null,
-        status: 1
+        state: 1
       },
       options: {
-        status: [
+        states: [
           { value: 0, label: '禁用' },
           { value: 1, label: '启用' }
         ]
@@ -49,8 +50,7 @@ export default {
           if (rule.data && value === rule.data.name) {
             return callback()
           }
-          const params = { key: 'name', value: value }
-          checkExist(params).then(({ data }) => {
+          checkExist({name: value}).then(({ data }) => {
             if (data) {
               callback(new Error('已存在,请勿重复添加'))
             } else {
@@ -75,7 +75,7 @@ export default {
     loadInfo() {
       const { obj } = this.data
       this.mloading.show()
-      crud('get', { id: obj.id }).then(({ data }) => {
+      fetchInfo('/admin/api/sysPermission', obj.id ).then(({ data }) => {
         this.form = data
         this.mloading.close()
       }).catch(error => this.mloading.error(error, () => this.loadInfo()))
@@ -92,7 +92,9 @@ export default {
           }
           this.$setKeyValue(this.button, { loading: true, text: '提交中..' })
           if (this.data.type === 'add') {
-            crud('post', this.form).then(() => this.success()).catch(() => this.error())
+            let requestForm = this.$copy(this.form)
+            delete requestForm.id
+            crud('post', requestForm).then(() => this.success()).catch(() => this.error())
           } else {
             crud('put', this.form).then(() => this.success()).catch(() => this.error())
           }

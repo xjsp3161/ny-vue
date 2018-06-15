@@ -1,7 +1,7 @@
 import addModel from '@/public/addModel.js'
 import rules from '@/public/rules.js'
-import { crud, checkUserNameIsExist } from '@/api/user.js'
-import { fetchList, fetchInfo } from '@/api/index.js'
+import { checkUserNameIsExist } from '@/api/user.js'
+import { fetchList, crud, fetchInfo } from '@/api/index.js'
 export default {
   mixins: [ addModel, rules ],
   data() {
@@ -75,7 +75,7 @@ export default {
     loadInfo() {
       const { obj } = this.data
       this.mloading.show()
-      fetchInfo('/admin/api/sysUser/edit', obj.id ).then(({ data }) => {
+      fetchInfo('/admin/api/sysUser/edit', obj.id).then(({ data }) => {
         this.form = {
           id: data.id,
           name: data.name,
@@ -108,9 +108,9 @@ export default {
           delete requestForm.confirmPassword
           if (this.data.type === 'add') {
             delete requestForm.id
-            crud('post', requestForm).then(() => this.success()).catch(() => this.error())
+            crud('/admin/api/sysUser', 'post', requestForm).then(() => this.success()).catch(() => this.error())
           } else {
-            crud('put', requestForm).then(() => this.success()).catch(() => this.error())
+            crud('/admin/api/sysUser', 'put', requestForm).then(() => this.success()).catch(() => this.error())
           }
         }
       })

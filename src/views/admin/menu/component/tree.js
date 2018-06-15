@@ -47,7 +47,7 @@ export default {
       if (data.children && data.children.length > 0) {
         return (
           <span style='width:100%'>
-            <span style='float:left; line-height:26px;'>{node.label}</span>
+            <span style='float:left; padding-top:8px;'>{node.label}</span>
             <span style='float:right; margin-right:5px;'>
               <el-button size='mini' type='text' on-click={ () => this.append(data) }>添加</el-button>
               <el-button size='mini' type='text' on-click={ () => this.edit(data) }>编辑</el-button>
@@ -57,7 +57,7 @@ export default {
       } else {
         return (
           <span style='width:100%'>
-            <span style='float:left; line-height:26px;'>{node.label}</span>
+            <span style='float:left; padding-top:8px;'>{node.label}</span>
             <span style='float:right; margin-right:5px;'>
               <el-button size='mini' type='text' on-click={ () => this.append(data) }>添加</el-button>
               <el-button size='mini' type='text' on-click={ () => this.edit(data) }>编辑</el-button>

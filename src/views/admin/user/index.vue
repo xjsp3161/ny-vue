@@ -25,9 +25,11 @@
       <el-table-column prop="lastPasswordChange" label="最后更新时间" align="center"></el-table-column>
       <el-table-column label="操作" align="center" width="180">
         <template slot-scope="scope">
-          <el-button type="primary" size="mini" @click="clickShowRelationDialog(scope.$index, scope.row)">关联角色</el-button>
-          <el-button type="primary" size="mini" @click="clickEdit(scope.$index, scope.row)">编辑</el-button>
-          <el-button type="danger" size="mini" @click="clickDelete(scope.$index, scope.row)">删除</el-button>
+          <template v-if="scope.row.username !== 'admin'">
+            <el-button type="primary" size="mini" @click="clickShowRelationDialog(scope.$index, scope.row)">关联角色</el-button>
+            <el-button type="primary" size="mini" @click="clickEdit(scope.$index, scope.row)">编辑</el-button>
+            <el-button type="danger" size="mini" @click="clickDelete(scope.$index, scope.row)">删除</el-button>
+          </template>
         </template>
       </el-table-column>
     </el-table>
@@ -47,7 +49,7 @@
 </div>
 </template>
 <script>
-import { fetchList, crud } from '@/api/user.js'
+import { fetchList, deleteId } from '@/api/index.js'
 import model from '@/public/indexModel.js'
 import Add from './add.vue'
 import RelationDialog from '../component/RelationDialog/index.vue'
@@ -83,7 +85,7 @@ export default {
           urls: {
             noRelation: '/admin/api/sysUserRole/userNoRelationRoleList',
             relation: '/admin/api/sysUserRole/userRoleList',
-            batchSave: '/admin/api/sysUserRole/batchSave',
+            batchSave: '/admin/api/sysUserRole/batchAdd',
             batchDelete: '/admin/api/sysUserRole/batchDelete'
           }
         }
@@ -100,7 +102,7 @@ export default {
       const { page, size } = this.pagination
       params.page = page
       params.size = size
-      fetchList(params).then(({ data }) => {
+      fetchList('/admin/api/sysUser', params).then(({ data }) => {
         this.mloading.hide()
         this.table.data = data.data
         this.pagination.total = data.total
@@ -136,7 +138,7 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        crud('delete', { id: row.id }).then(() => {
+        deleteId('/admin/api/sysUser', row.id).then(() => {
           this.$message({ type: 'success', message: '删除成功!' })
           this.fetchData()
         }).catch(() => {

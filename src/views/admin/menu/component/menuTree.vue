@@ -4,7 +4,16 @@
       <div class="content-layout">
         <div class="tree-layout">
           <el-input size="small" placeholder="输入关键字进行过滤" v-model="filterText"></el-input>
-          <el-tree :expand-on-click-node="false" :render-content="renderContent" @node-click="treeNodeClick" :data="treeList" highlight-current :props="defaultProps" :filter-node-method="filterNode" ref="tree"></el-tree>
+          <el-tree 
+            :expand-on-click-node="false"
+            :render-content="renderContent"
+            @node-click="treeNodeClick"
+            :data="treeList"
+            highlight-current
+            :props="defaultProps" 
+            :filter-node-method="filterNode"
+            ref="tree">
+          </el-tree>
         </div>
         <div class="info-layout">
           <el-form :model="form" :rules="rules" ref="form" label-width="100px" id="form" class="demo-ruleForm" :inline="true">

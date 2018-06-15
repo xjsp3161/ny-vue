@@ -13,10 +13,12 @@
       <el-table-column prop="description" label="描述" align="center"></el-table-column>
       <el-table-column label="操作" align="center">
         <template slot-scope="scope">
-          <el-button type="primary" size="mini" @click="clickShowMenuAssociation(scope.$index, scope.row)">关联菜单</el-button>
-          <el-button type="primary" size="mini" @click="clickShowResourceRelationDialog(scope.$index, scope.row)">关联资源</el-button>
-         <el-button type="primary" size="mini" @click="clickEdit(scope.$index, scope.row)">编辑</el-button>
-          <el-button type="danger" size="mini" @click="clickDelete(scope.$index, scope.row)">删除</el-button>
+          <template v-if="scope.row.id !== 1">
+            <el-button type="primary" size="mini" @click="clickShowMenuAssociation(scope.$index, scope.row)">关联菜单</el-button>
+            <el-button type="primary" size="mini" @click="clickShowResourceRelationDialog(scope.$index, scope.row)">关联资源</el-button>
+            <el-button type="primary" size="mini" @click="clickEdit(scope.$index, scope.row)">编辑</el-button>
+            <el-button type="danger" size="mini" @click="clickDelete(scope.$index, scope.row)">删除</el-button>
+          </template>
         </template>
       </el-table-column>
     </el-table>
@@ -30,14 +32,14 @@
       layout="total, sizes, prev, pager, next"
       :total="pagination.total">
     </el-pagination>
-  </table-contain> 
+  </table-contain>
   <add v-if="add.visiable" v-model="add.visiable" :data="add.data" @add="handleCurrentChange(1)" @edit="fetchData"></add>
   <menu-relation v-if="menuRelation.visiable" v-model="menuRelation.visiable" :data="menuRelation.data"></menu-relation>
   <relation-dialog v-if="resourceRelationDialog.visiable" v-model="resourceRelationDialog.visiable" :data="resourceRelationDialog.data"></relation-dialog>
 </div>
 </template>
 <script>
-import { fetchList, crud } from '@/api'
+import { fetchList, deleteId } from '@/api'
 import model from '@/public/indexModel.js'
 import Add from './add.vue'
 import MenuRelation from '../component/MenuRelation/index.vue'
@@ -130,7 +132,7 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        crud('delete', { id: row.id }).then(() => {
+        deleteId('/admin/api/sysPermission', row.id).then(() => {
           this.$message({ type: 'success', message: '删除成功!' })
           this.fetchData()
         }).catch(() => {

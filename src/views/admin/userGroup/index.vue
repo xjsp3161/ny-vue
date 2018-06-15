@@ -14,10 +14,12 @@
       <el-table-column prop="description" label="描述" align="center"></el-table-column>
       <el-table-column label="操作" align="center">
         <template slot-scope="scope">
-          <el-button type="primary" size="mini" @click="clickShowUserRelationDialog(scope.$index, scope.row)">关联用户</el-button>
-          <el-button type="primary" size="mini" @click="clickShowRoleRelationDialog(scope.$index, scope.row)">关联角色</el-button>
-         <el-button type="primary" size="mini" @click="clickEdit(scope.$index, scope.row)">编辑</el-button>
-          <el-button type="danger" size="mini" @click="clickDelete(scope.$index, scope.row)">删除</el-button>
+          <template v-if="scope.row.id !== 1">
+            <el-button type="primary" size="mini" @click="clickShowUserRelationDialog(scope.$index, scope.row)">关联用户</el-button>
+            <el-button type="primary" size="mini" @click="clickShowRoleRelationDialog(scope.$index, scope.row)">关联角色</el-button>
+            <el-button type="primary" size="mini" @click="clickEdit(scope.$index, scope.row)">编辑</el-button>
+            <el-button type="danger" size="mini" @click="clickDelete(scope.$index, scope.row)">删除</el-button>
+          </template>
         </template>
       </el-table-column>
     </el-table>
@@ -70,7 +72,7 @@ export default {
           urls: {
             noRelation: '/admin/api/sysUserGroupPk/groupNoRelationUserList',
             relation: '/admin/api/sysUserGroupPk/groupUserList',
-            batchSave: '/admin/api/sysUserGroupPk/batchSave',
+            batchSave: '/admin/api/sysUserGroupPk/batchAdd',
             batchDelete: '/admin/api/sysUserGroupPk/batchDelete'
           }
         }
@@ -87,7 +89,7 @@ export default {
           urls: {
             noRelation: '/admin/api/sysUserGroupRole/groupNoRelationRoleList',
             relation: '/admin/api/sysUserGroupRole/groupRoleList',
-            batchSave: '/admin/api/sysUserGroupRole/batchSave',
+            batchSave: '/admin/api/sysUserGroupRole/batchAdd',
             batchDelete: '/admin/api/sysUserGroupRole/batchDelete'
           }
         }
