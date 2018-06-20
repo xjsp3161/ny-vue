@@ -7,7 +7,7 @@ export default {
   },
   methods: {
     treeNodeClick(data, node, tree) {
-      if (!this.isCluckOperationBtn) {
+      if (!this.isClickOperationBtn) {
         this.$setOriginalKV(this.form, data)
       }
     },
@@ -16,15 +16,26 @@ export default {
       return data.label.indexOf(value) !== -1
     },
     append(data) {
-      this.isCluckOperationBtn = true
+      this.isClickOperationBtn = true
       this.currentOperationTypes = this.OperationTypes.Add
+      this.button.text = '添加'
       this.form = this.$copy(this.originalForm)
-      this.$setKeyValue(this.form, { parentId: data.id, parentName: data.title, level: data.level + 1, enable: '1' })
+      this.$setKeyValue(this.form, { parentId: data.id, parentName: data.title, level: data.level + 1, state: 1 })
       setTimeout(() => {
-        this.isCluckOperationBtn = false
+        this.isClickOperationBtn = false
       }, 200)
     },
     edit(data) {
+      this.isClickOperationBtn = true
+      this.currentOperationTypes = this.OperationTypes.Edit
+      this.button.text = '修改'
+      this.originalData = this.$copy(data)
+      delete this.originalData.children
+      this.form = this.$copy(data)
+      delete this.form.children
+      setTimeout(() => {
+        this.isClickOperationBtn = false
+      }, 200)
     },
     remove(node, data) {
       this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {

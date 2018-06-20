@@ -14,14 +14,13 @@
       </el-table-column>
       <el-table-column prop="title" label="名称" align="center"></el-table-column>
       <el-table-column prop="icon" label="图标" align="center"></el-table-column>
-      <el-table-column prop="url" label="URL" align="center"></el-table-column>
       <el-table-column prop="parentName" label="父级" align="center"></el-table-column>
       <el-table-column prop="sort" label="排序" align="center"></el-table-column>
       <el-table-column prop="level" label="等级" align="center"></el-table-column>
-      <el-table-column prop="name" label="国际化" align="center"></el-table-column>
-      <el-table-column prop="path" label="资源路径" align="center"></el-table-column>
-      <el-table-column prop="component" label="前端组件" align="center"></el-table-column>
-      <el-table-column prop="enable" label="状态" align="center"></el-table-column>
+      <el-table-column prop="name" label="前端国际化" align="center"></el-table-column>
+      <el-table-column prop="path" label="前端资源路径" align="center"></el-table-column>
+      <el-table-column prop="component" label="前端组件路径" align="center"></el-table-column>
+      <el-table-column prop="state" label="状态" align="center"></el-table-column>
     </el-table>
     <el-pagination
       slot="footer"

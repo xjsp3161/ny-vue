@@ -17,7 +17,7 @@
       <el-table-column prop="description" label="接口描述" align="center"></el-table-column>
       <el-table-column prop="status" label="状态" align="center">
         <template slot-scope="scope">
-          <template v-if="scope.row.status == 0">
+          <template v-if="scope.row.state == 0">
             <el-tag size="mini" type="info">禁用</el-tag>
           </template>
           <template v-else>
@@ -47,7 +47,7 @@
 </div>
 </template>
 <script>
-import { fetchList, crud } from '@/api'
+import { fetchList, deleteId } from '@/api'
 import model from '@/public/indexModel.js'
 import Add from './add.vue'
 export default {
@@ -114,7 +114,7 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        crud('delete', { id: row.id }).then(() => {
+        deleteId('/admin/api/sysResource', row.id).then(() => {
           this.$message({ type: 'success', message: '删除成功!' })
           this.fetchData()
         }).catch(() => {

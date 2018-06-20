@@ -40,7 +40,7 @@
 </div>
 </template>
 <script>
-import { fetchList, crud } from '@/api'
+import { fetchList, deleteId } from '@/api'
 import model from '@/public/indexModel.js'
 import Add from './add.vue'
 import RelationDialog from '../component/RelationDialog/index.vue'
@@ -142,7 +142,7 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        crud('delete', { id: row.id }).then(() => {
+        deleteId('/admin/api/sysUserGroup', row.id).then(() => {
           this.$message({ type: 'success', message: '删除成功!' })
           this.fetchData()
         }).catch(() => {

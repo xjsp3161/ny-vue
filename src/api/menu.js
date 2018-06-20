@@ -40,3 +40,11 @@ export function fetchPermissionMenus(query) {
     params: query
   })
 }
+
+export function checkIsExist(params) {
+  return request({
+    url: '/admin/api/sysMenu/exist',
+    method: 'GET',
+    params: params
+  })
+}

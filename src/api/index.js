@@ -32,3 +32,18 @@ export function deleteId(url, id) {
   })
 }
 
+export function checkNameIsExist(url, name) {
+  return request({
+    url: url,
+    method: 'get',
+    params: { name: name }
+  })
+}
+
+export function checkIsExist(url, params) {
+  return request({
+    url: url,
+    method: 'get',
+    params: params
+  })
+}

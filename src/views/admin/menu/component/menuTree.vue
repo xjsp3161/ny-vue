@@ -16,15 +16,12 @@
           </el-tree>
         </div>
         <div class="info-layout">
-          <el-form :model="form" :rules="rules" ref="form" label-width="100px" id="form" class="demo-ruleForm" :inline="true">
-            <el-form-item label="名称" prop="title">
+          <el-form :model="form" :rules="rules" ref="form" label-width="110px" id="form" class="demo-ruleForm" :inline="true">
+            <el-form-item label="名称" prop="title" :rules="[{validator: rules.existName, trigger:'blur', data: originalData, required: true}]">
               <el-input size="small" class="w180"  :placeholder="placeholder" v-model="form.title"></el-input>
             </el-form-item>
             <el-form-item label="icon" prop="icon">
               <el-input size="small" class="w180"  :placeholder="placeholder" v-model="form.icon"></el-input>
-            </el-form-item>
-            <el-form-item label="url" prop="url">
-              <el-input size="small" class="w180"  :placeholder="placeholder" v-model="form.url"></el-input>
             </el-form-item>
             <el-form-item label="父级" prop="parentName">
               <el-input size="small" class="w180" disabled  v-model="form.parentName"></el-input>
@@ -35,18 +32,19 @@
             <el-form-item label="等级" prop="level">
               <el-input size="small" class="w180" disabled v-model="form.level"></el-input>
             </el-form-item>
-            <el-form-item label="国际化" prop="name">
+            <el-form-item label="前端国际化" prop="name" :rules="rules.input">
               <el-input size="small" class="w180" v-model="form.name"></el-input>
             </el-form-item>
-            <el-form-item label="资源路径" prop="path">
+            <el-form-item label="前端资源路径" prop="path" :rules="rules.input">
               <el-input size="small" class="w180" v-model="form.path"></el-input>
             </el-form-item>
-            <el-form-item label="前端组件" prop="webComponent">
+            <el-form-item label="前端组件路径" prop="component">
               <el-input size="small" class="w180" v-model="form.component"></el-input>
             </el-form-item>
-            <el-form-item label="是否启用" prop="enable">
-              <el-radio v-model="form.enable" label="1">启用</el-radio>
-              <el-radio v-model="form.enable" label="0">禁用</el-radio>
+            <el-form-item label="状态" prop="status">
+              <el-select size="small" class="w180" v-model="form.state" placeholder="请选择">
+                <el-option v-for="item in options.states" :label="item.label" :key="item.value" :value="item.value"></el-option>
+              </el-select>
             </el-form-item>
             <el-form-item label="描述" prop="description">
               <el-input type="textarea" class="w180" :rows="2" placeholder="请输入内容" v-model="form.description"></el-input>

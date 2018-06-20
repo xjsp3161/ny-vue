@@ -1,7 +1,5 @@
 import request from '@/utils/request'
 
-const url = '/admin/api/sysUser'
-
 export function fetchUserMenuTree(query) {
   return request({
     url: '/admin/api/sysUser/userMenuTree',

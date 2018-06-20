@@ -23,8 +23,7 @@
 </template>
 <script>
 import addModel from '@/public/addModel.js'
-import { fetchInfo } from '@/api/index.js'
-import { crud, checkExist } from '@/api/permission.js'
+import { crud, fetchInfo, checkNameIsExist } from '@/api/index.js'
 export default {
   mixins: [addModel],
   data() {
@@ -50,7 +49,7 @@ export default {
           if (rule.data && value === rule.data.name) {
             return callback()
           }
-          checkExist({name: value}).then(({ data }) => {
+          checkNameIsExist('/admin/api/sysPermission/exist', { name: value }).then(({ data }) => {
             if (data) {
               callback(new Error('已存在,请勿重复添加'))
             } else {
@@ -75,7 +74,7 @@ export default {
     loadInfo() {
       const { obj } = this.data
       this.mloading.show()
-      fetchInfo('/admin/api/sysPermission', obj.id ).then(({ data }) => {
+      fetchInfo('/admin/api/sysPermission', obj.id).then(({ data }) => {
         this.form = data
         this.mloading.close()
       }).catch(error => this.mloading.error(error, () => this.loadInfo()))
@@ -91,12 +90,13 @@ export default {
             return
           }
           this.$setKeyValue(this.button, { loading: true, text: '提交中..' })
+          const url = '/admin/api/sysPermission'
           if (this.data.type === 'add') {
-            let requestForm = this.$copy(this.form)
+            const requestForm = this.$copy(this.form)
             delete requestForm.id
-            crud('post', requestForm).then(() => this.success()).catch(() => this.error())
+            crud(url, 'post', requestForm).then(() => this.success()).catch(() => this.error())
           } else {
-            crud('put', this.form).then(() => this.success()).catch(() => this.error())
+            crud(url, 'put', this.form).then(() => this.success()).catch(() => this.error())
           }
         }
       })

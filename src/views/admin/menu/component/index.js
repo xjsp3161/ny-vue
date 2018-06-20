@@ -1,11 +1,13 @@
 import parent from '@/public/parent.js'
+import rules from '@/public/rules.js'
 import { fetchMenuTree, curdMenu } from '@/api/menu.js'
 import addModel from '@/public/addModel.js'
 import model from './model'
 import tree from './tree'
+
 export default {
   name: 'menu-tree',
-  mixins: [parent, addModel, model, tree],
+  mixins: [parent, addModel, model, tree, rules],
   created() {
     this.form = this.$copy(this.originalForm)
     this.$setKeyValue(this.dialog, { title: '菜单树', visiable: true })
@@ -31,8 +33,20 @@ export default {
     clickSaveOrUpdate() {
       this.$refs['form'].validate(valid => {
         if (valid) {
+          if (this.currentOperationTypes === this.OperationTypes.Edit && this.$compareObjValue(this.originalData, this.form)) {
+            this.$message({ type: 'warning', message: '数据并未改变' })
+            return
+          }
           this.$setKeyValue(this.button, { loading: true, text: '提交中..' })
-          curdMenu('post', this.form).then(() => this.success()).catch(() => this.error())
+          const requestForm = this.$copy(this.form)
+          delete requestForm.confirmPassword
+          const url = '/admin/api/sysUser'
+          if (this.currentOperationTypes === this.OperationTypes.Add) {
+            delete requestForm.id
+            curdMenu('post', this.form).then(() => this.success()).catch(() => this.error())
+          } else {
+            curdMenu('put', this.form).then(() => this.success()).catch(() => this.error())
+          }
         }
       })
     },

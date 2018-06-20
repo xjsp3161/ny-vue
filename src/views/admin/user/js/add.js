@@ -89,9 +89,9 @@ export default {
       }).catch(error => this.mloading.error(error, () => this.loadInfo()))
     },
     loadUserGroup() {
-      fetchList('/admin/api/sysUserGroup', { page: 1, size: 100}).then(({ data }) => {
+      fetchList('/admin/api/sysUserGroup', { page: 1, size: 100 }).then(({ data }) => {
         this.options.userGroups = data.data
-      }).catch(error => {})
+      }).catch(error => { console.log(error) })
     },
     closeDialog() {
       this.$emit('input', false)
@@ -104,13 +104,14 @@ export default {
             return
           }
           this.$setKeyValue(this.button, { loading: true, text: '提交中..' })
-          let requestForm = this.$copy(this.form)
+          const requestForm = this.$copy(this.form)
           delete requestForm.confirmPassword
+          const url = '/admin/api/sysUser'
           if (this.data.type === 'add') {
             delete requestForm.id
-            crud('/admin/api/sysUser', 'post', requestForm).then(() => this.success()).catch(() => this.error())
+            crud(url, 'post', requestForm).then(() => this.success()).catch(() => this.error())
           } else {
-            crud('/admin/api/sysUser', 'put', requestForm).then(() => this.success()).catch(() => this.error())
+            crud(url, 'put', requestForm).then(() => this.success()).catch(() => this.error())
           }
         }
       })

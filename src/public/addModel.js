@@ -21,7 +21,7 @@ export default {
         loading: false, // 确定按钮状态
         text: '确定' // 按钮默认文字
       },
-      originalData: null //原始数据
+      originalData: null // 原始数据
     }
   }
 }
