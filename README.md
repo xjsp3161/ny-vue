@@ -3,6 +3,9 @@
 ny-vue 是基于vue2.x, element-ui2.x, vue-element-admin 开发
 在此感谢 element-ui 作者[饿了么前端团队](https://github.com/ElemeFE/element "饿了么前端团队")， vue-element-admin 作者 [PanJiaChen](https://github.com/PanJiaChen/vue-element-admin "PanJiaChen")
 该项目是基于vue-element-admin二次开发，升级了其依赖elment-ui版本，并根据自己的实际需要删除了部分组件，以及改造了部分代码，UI样式参照 [ant design](https://preview.pro.ant.design/#/dashboard/analysis "ant design")
+项目访问地址：[点击访问](http://www.stars21.cn) 线上项目目前是使用docker容器在运行，仅供演示。
+账号密码： guest  123456
+技术交流群： 807233785
 #### 前端项目UI截图：
 此项目依赖ny-cloud项目作为数据提供服务：[ny-cloud点击移步](https://github.com/neveryielding/ny-cloud)<br>
 登录页面
