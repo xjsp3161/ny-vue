@@ -68,10 +68,10 @@ export default {
           relationIdKey: 'permissionId',
           multipleIdKey: 'permissionIds',
           urls: {
-            noRelation: '/admin/api/sysRolePermission/roleNoRelationPermissionList',
-            relation: '/admin/api/sysRolePermission/rolePermissionList',
-            batchSave: '/admin/api/sysRolePermission/batchAdd',
-            batchDelete: '/admin/api/sysRolePermission/batchDelete'
+            noRelation: '/admin/api/sysRole/roleNoRelationPermissionList',
+            relation: '/admin/api/sysRole/rolePermissionList',
+            batchSave: '/admin/api/sysRole/batchPermissionAdd',
+            batchDelete: '/admin/api/sysRole/batchPermissionDelete'
           }
         }
       }

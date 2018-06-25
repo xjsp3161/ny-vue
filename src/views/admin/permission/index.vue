@@ -77,10 +77,10 @@ export default {
           relationIdKey: 'resourceId',
           multipleIdKey: 'resourceIds',
           urls: {
-            noRelation: '/admin/api/sysPermissionResource/permissionNoRelationResourceList',
-            relation: '/admin/api/sysPermissionResource/permissionResourceList',
-            batchSave: '/admin/api/sysPermissionResource/batchAdd',
-            batchDelete: '/admin/api/sysPermissionResource/batchDelete'
+            noRelation: '/admin/api/sysPermission/permissionNoRelationResourceList',
+            relation: '/admin/api/sysPermission/permissionResourceList',
+            batchSave: '/admin/api/sysPermission/batchResourceAdd',
+            batchDelete: '/admin/api/sysPermission/batchResourceDelete'
           }
         }
       }

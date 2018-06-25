@@ -2,7 +2,7 @@ import request from '@/utils/request'
 
 export function noRelation(query) {
   return request({
-    url: '/admin/api/sysPermissionMenu/permissionNoRelationMenuTree',
+    url: '/admin/api/sysPermission/permissionNoRelationMenuTree',
     method: 'get',
     params: query
   })
@@ -10,7 +10,7 @@ export function noRelation(query) {
 
 export function relation(query) {
   return request({
-    url: '/admin/api/sysPermissionMenu/permissionMenuTree',
+    url: '/admin/api/sysPermission/permissionMenuTree',
     method: 'get',
     params: query
   })
@@ -18,7 +18,7 @@ export function relation(query) {
 
 export function batchSave(params) {
   return request({
-    url: '/admin/api/sysPermissionMenu/batchAdd',
+    url: '/admin/api/sysPermission/batchMenuAdd',
     method: 'post',
     data: params
   })
@@ -26,7 +26,7 @@ export function batchSave(params) {
 
 export function batchDelete(params) {
   return request({
-    url: '/admin/api/sysPermissionMenu/batchDelete',
+    url: '/admin/api/sysPermission/batchMenuDelete',
     method: 'post',
     data: params
   })

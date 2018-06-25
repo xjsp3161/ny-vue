@@ -70,10 +70,10 @@ export default {
           relationIdKey: 'userId',
           multipleIdKey: 'userIds',
           urls: {
-            noRelation: '/admin/api/sysUserGroupPk/groupNoRelationUserList',
-            relation: '/admin/api/sysUserGroupPk/groupUserList',
-            batchSave: '/admin/api/sysUserGroupPk/batchAdd',
-            batchDelete: '/admin/api/sysUserGroupPk/batchDelete'
+            noRelation: '/admin/api/sysUserGroup/groupNoRelationUserList',
+            relation: '/admin/api/sysUserGroup/groupUserList',
+            batchSave: '/admin/api/sysUserGroup/batchUserAdd',
+            batchDelete: '/admin/api/sysUserGroup/batchUserDelete'
           }
         }
       },
@@ -87,10 +87,10 @@ export default {
           relationIdKey: 'roleId',
           multipleIdKey: 'roleIds',
           urls: {
-            noRelation: '/admin/api/sysUserGroupRole/groupNoRelationRoleList',
-            relation: '/admin/api/sysUserGroupRole/groupRoleList',
-            batchSave: '/admin/api/sysUserGroupRole/batchAdd',
-            batchDelete: '/admin/api/sysUserGroupRole/batchDelete'
+            noRelation: '/admin/api/sysUserGroup/groupNoRelationRoleList',
+            relation: '/admin/api/sysUserGroup/groupRoleList',
+            batchSave: '/admin/api/sysUserGroup/batchRoleAdd',
+            batchDelete: '/admin/api/sysUserGroup/batchRoleDelete'
           }
         }
       }

@@ -83,10 +83,10 @@ export default {
           relationIdKey: 'roleId',
           multipleIdKey: 'roleIds',
           urls: {
-            noRelation: '/admin/api/sysUserRole/userNoRelationRoleList',
-            relation: '/admin/api/sysUserRole/userRoleList',
-            batchSave: '/admin/api/sysUserRole/batchAdd',
-            batchDelete: '/admin/api/sysUserRole/batchDelete'
+            noRelation: '/admin/api/sysUser/userNoRelationRoleList',
+            relation: '/admin/api/sysUser/userRoleList',
+            batchSave: '/admin/api/sysUser/batchRoleAdd',
+            batchDelete: '/admin/api/sysUser/batchRoleDelete'
           }
         }
       }
