@@ -15,7 +15,8 @@
         <template slot-scope="scope">
           <template v-if="scope.row.id !== 1">
             <el-button type="primary" size="mini" @click="clickShowMenuAssociation(scope.$index, scope.row)">关联菜单</el-button>
-            <el-button type="primary" size="mini" @click="clickShowResourceRelationDialog(scope.$index, scope.row)">关联资源</el-button>
+            <el-button type="primary" size="mini" @click="clickShowResourceDialog(scope.$index, scope.row)">关联资源</el-button>
+            <!-- <el-button type="primary" size="mini" @click="clickShowResourceRelationDialog(scope.$index, scope.row)">关联资源</el-button> -->
             <el-button type="primary" size="mini" @click="clickEdit(scope.$index, scope.row)">编辑</el-button>
             <el-button type="danger" size="mini" @click="clickDelete(scope.$index, scope.row)">删除</el-button>
           </template>
@@ -36,6 +37,7 @@
   <add v-if="add.visiable" v-model="add.visiable" :data="add.data" @add="handleCurrentChange(1)" @edit="fetchData"></add>
   <menu-relation v-if="menuRelation.visiable" v-model="menuRelation.visiable" :data="menuRelation.data"></menu-relation>
   <relation-dialog v-if="resourceRelationDialog.visiable" v-model="resourceRelationDialog.visiable" :data="resourceRelationDialog.data"></relation-dialog>
+  <resource-dialog v-if="resourceDialog.visiable" v-model="resourceDialog.visiable" :data="resourceDialog.data"></resource-dialog>
 </div>
 </template>
 <script>
@@ -44,10 +46,11 @@ import model from '@/public/indexModel.js'
 import Add from './add.vue'
 import MenuRelation from '../component/MenuRelation/index.vue'
 import RelationDialog from '../component/RelationDialog/index.vue'
+import ResourceDialog from '../component/ResourceDialog/index.vue'
 export default {
   mixins: [model],
   name: 'permission',
-  components: { Add, MenuRelation, RelationDialog },
+  components: { Add, MenuRelation, RelationDialog, ResourceDialog },
   data() {
     return {
       searchBarData: [
@@ -65,6 +68,12 @@ export default {
         data: {
           type: 'role',
           title: '角色关联用户'
+        }
+      },
+      resourceDialog: {
+        visiable: false,
+        data: {
+          title: '关联资源'
         }
       },
       resourceRelationDialog: {
@@ -146,6 +155,9 @@ export default {
     clickShowResourceRelationDialog(index, row) {
       this.resourceRelationDialog.data.obj = row
       this.resourceRelationDialog.visiable = true
+    },
+    clickShowResourceDialog(index, row) {
+      this.$setKeyValue(this.resourceDialog, { visiable: true, data: { obj: row }})
     }
   }
 }

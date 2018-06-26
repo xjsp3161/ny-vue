@@ -1,5 +1,13 @@
 import request from '@/utils/request'
 
+export function fetch(url, query) {
+  return request({
+    url: url,
+    method: 'get',
+    params: query
+  })
+}
+
 export function fetchList(url, query) {
   return request({
     url: url,
