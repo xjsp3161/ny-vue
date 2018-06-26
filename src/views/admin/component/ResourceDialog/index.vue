@@ -3,10 +3,14 @@
     <el-dialog :title="dialog.title" width="1000px" :visible.sync="dialog.visiable" @close="closeDialog">
       <div class="content-layout">
         <div class="checkbox-layout" v-for="(item, index) in resourceTree" :key="index">
-          <el-checkbox v-model="item.checked" :indeterminate="item.indeterminate" @change="handleCheckAllChange($event, item)" class="checkbox-title">{{item.name}}</el-checkbox>
+          <el-checkbox v-model="item.checked" :indeterminate="item.indeterminate" @change="handleCheckAllChange($event, index, item)" class="checkbox-title">{{item.name}}</el-checkbox>
           <br/>
-          <el-checkbox v-for="(sub, subIndex) in item.children" :checked="sub.checked" @change="handleCheckChange($event, item, sub)" :label="sub.name" :key="subIndex">{{sub.name}}</el-checkbox>
+          <el-checkbox v-for="(sub, subIndex) in item.children" v-model="sub.checked" @change="handleCheckChange($event, item, sub)" :label="sub.name" :key="subIndex">{{sub.name}}</el-checkbox>
         </div>
+      </div>
+      <div slot="footer" class="dialog-footer">
+        <el-button :loading="button.loading" size="small" type="primary" @click="clickSave">{{button.text}}</el-button>
+        <el-button size="small" @click="dialog.visiable = false">取 消</el-button>
       </div>
     </el-dialog>
   </div>
