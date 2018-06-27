@@ -16,7 +16,6 @@
           <template v-if="scope.row.id !== 1">
             <el-button type="primary" size="mini" @click="clickShowMenuAssociation(scope.$index, scope.row)">关联菜单</el-button>
             <el-button type="primary" size="mini" @click="clickShowResourceDialog(scope.$index, scope.row)">关联资源</el-button>
-            <!-- <el-button type="primary" size="mini" @click="clickShowResourceRelationDialog(scope.$index, scope.row)">关联资源</el-button> -->
             <el-button type="primary" size="mini" @click="clickEdit(scope.$index, scope.row)">编辑</el-button>
             <el-button type="danger" size="mini" @click="clickDelete(scope.$index, scope.row)">删除</el-button>
           </template>
@@ -36,7 +35,6 @@
   </table-contain>
   <add v-if="add.visiable" v-model="add.visiable" :data="add.data" @add="handleCurrentChange(1)" @edit="fetchData"></add>
   <menu-relation v-if="menuRelation.visiable" v-model="menuRelation.visiable" :data="menuRelation.data"></menu-relation>
-  <relation-dialog v-if="resourceRelationDialog.visiable" v-model="resourceRelationDialog.visiable" :data="resourceRelationDialog.data"></relation-dialog>
   <resource-dialog v-if="resourceDialog.visiable" v-model="resourceDialog.visiable" :data="resourceDialog.data"></resource-dialog>
 </div>
 </template>
@@ -67,30 +65,13 @@ export default {
         visiable: false,
         data: {
           type: 'role',
-          title: '角色关联用户'
+          title: '权限管理菜单'
         }
       },
       resourceDialog: {
         visiable: false,
         data: {
-          title: '关联资源'
-        }
-      },
-      resourceRelationDialog: {
-        visiable: false,
-        data: {
-          type: 'permissionResource',
-          title: '权限',
-          relation: '资源',
-          idKey: 'permissionId',
-          relationIdKey: 'resourceId',
-          multipleIdKey: 'resourceIds',
-          urls: {
-            noRelation: '/admin/api/sysPermission/permissionNoRelationResourceList',
-            relation: '/admin/api/sysPermission/permissionResourceList',
-            batchSave: '/admin/api/sysPermission/batchResourceAdd',
-            batchDelete: '/admin/api/sysPermission/batchResourceDelete'
-          }
+          title: '权限关联资源'
         }
       }
     }
@@ -151,10 +132,6 @@ export default {
     },
     clickShowMenuAssociation(index, row) {
       this.$setKeyValue(this.menuRelation, { visiable: true, data: { obj: row }})
-    },
-    clickShowResourceRelationDialog(index, row) {
-      this.resourceRelationDialog.data.obj = row
-      this.resourceRelationDialog.visiable = true
     },
     clickShowResourceDialog(index, row) {
       this.$setKeyValue(this.resourceDialog, { visiable: true, data: { obj: row }})

@@ -1,31 +1,29 @@
 import parent from '@/public/parent.js'
 import addModel from '@/public/addModel.js'
-import { fetch , crud } from '@/api/index.js'
+import { fetch , curd } from '@/api/index.js'
 export default {
   name: 'resource-dialog',
   mixins: [parent, addModel],
   data() {
     return {
+      permissionId: null,
       resourceTree: [],
-      from: {
-        permissionId: null,
-        resourceIds: []
-      }
+      originalRequest: []
     }
   },
   created() {
-    this.createDefaultMLoading('.el-dialog')
     this.dialog = { title: '关联资源', visiable: true }
     this.button.text = '关联'
-    this.from.permissionId = this.data.obj.id
+    this.permissionId = this.data.obj.id
   },
   mounted() {
+    this.createDefaultMLoading('.el-dialog')
     this.fetchData()
   },
   methods: {
     fetchData() {
       this.mloading.show()
-      fetch('/admin/api/sysPermission/permissionResourceTree', { permissionId: this.data.obj.id }).then(({ data }) => {
+      fetch('/admin/api/sysPermission/permissionResourceTree', { permissionId: this.permissionId }).then(({ data }) => {
         this.mloading.hide()
         data.forEach(element => {
           element.indeterminate = false
@@ -75,23 +73,26 @@ export default {
       this.$emit('input', false)
     },
     clickSave() {
-      let resourceIds = []
+      const request = []
       this.resourceTree.forEach(item => {
         if (item.checked) {
-          resourceIds.push(item.id)
+          request.push({permissionId: this.permissionId, resourceId: item.id})
         }
         item.children.forEach(child => {
           if (child.checked) {
-            resourceIds.push(child.id)
+            request.push({permissionId: this.permissionId, resourceId: child.id})
           }
         })
       })
-      this.from.resourceIds = resourceIds
-      crud('/admin/api/sysPermission/batchResourceAdd', 'post', this.from).then(() => {
-        this.$message({type: 'error', message: '资源关联成功'})
-      }).catch(() => {
-        this.$message({type: 'error', message: '资源关联失败'})
-      })
+      if (request.length === 0) {
+        this.$message({type: 'warning', message: '您并未关联任何资源'})
+      } else {
+        curd('/admin/api/sysPermission/batchResourceAdd', 'post', request).then(() => {
+          this.$message({type: 'success', message: '资源关联成功'})
+        }).catch(() => {
+          this.$message({type: 'error', message: '资源关联失败'})
+        })
+      }
     }
   }
 }

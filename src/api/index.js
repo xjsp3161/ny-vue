@@ -16,7 +16,7 @@ export function fetchList(url, query) {
   })
 }
 
-export function crud(url, method, params) {
+export function curd(url, method, params) {
   const methods = ['get', 'delete']
   const key = methods.includes(method) ? 'params' : 'data'
   return request({

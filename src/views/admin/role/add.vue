@@ -21,7 +21,7 @@
 </template>
 <script>
 import addModel from '@/public/addModel.js'
-import { crud, fetchInfo, checkIsExist } from '@/api/index.js'
+import { curd, fetchInfo, checkIsExist } from '@/api/index.js'
 export default {
   mixins: [addModel],
   data() {
@@ -87,9 +87,9 @@ export default {
           this.$setKeyValue(this.button, { loading: true, text: '提交中..' })
           const url = '/admin/api/sysRole'
           if (this.data.type === 'add') {
-            crud(url, 'post', this.form).then(() => this.success()).catch(() => this.error())
+            curd(url, 'post', this.form).then(() => this.success()).catch(() => this.error())
           } else {
-            crud(url, 'put', this.form).then(() => this.success()).catch(() => this.error())
+            curd(url, 'put', this.form).then(() => this.success()).catch(() => this.error())
           }
         }
       })

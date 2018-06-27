@@ -1,7 +1,7 @@
 import addModel from '@/public/addModel.js'
 import rules from '@/public/rules.js'
 import { checkUserNameIsExist } from '@/api/user.js'
-import { fetchList, crud, fetchInfo } from '@/api/index.js'
+import { fetchList, curd, fetchInfo } from '@/api/index.js'
 export default {
   mixins: [ addModel, rules ],
   data() {
@@ -109,9 +109,9 @@ export default {
           const url = '/admin/api/sysUser'
           if (this.data.type === 'add') {
             delete requestForm.id
-            crud(url, 'post', requestForm).then(() => this.success()).catch(() => this.error())
+            curd(url, 'post', requestForm).then(() => this.success()).catch(() => this.error())
           } else {
-            crud(url, 'put', requestForm).then(() => this.success()).catch(() => this.error())
+            curd(url, 'put', requestForm).then(() => this.success()).catch(() => this.error())
           }
         }
       })

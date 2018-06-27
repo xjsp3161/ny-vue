@@ -23,7 +23,7 @@
 </template>
 <script>
 import addModel from '@/public/addModel.js'
-import { crud, fetchInfo, checkNameIsExist } from '@/api/index.js'
+import { curd, fetchInfo, checkNameIsExist } from '@/api/index.js'
 export default {
   mixins: [addModel],
   data() {
@@ -94,9 +94,9 @@ export default {
           if (this.data.type === 'add') {
             const requestForm = this.$copy(this.form)
             delete requestForm.id
-            crud(url, 'post', requestForm).then(() => this.success()).catch(() => this.error())
+            curd(url, 'post', requestForm).then(() => this.success()).catch(() => this.error())
           } else {
-            crud(url, 'put', this.form).then(() => this.success()).catch(() => this.error())
+            curd(url, 'put', this.form).then(() => this.success()).catch(() => this.error())
           }
         }
       })
